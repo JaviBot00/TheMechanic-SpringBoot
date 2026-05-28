@@ -97,7 +97,7 @@ security:
 logging:
   level:
     root: WARN
-    com.workshopmanagement: INFO
+    com.hotguy.workshopmanagement: INFO
   file:
     # En producción los logs van a fichero, no solo a consola.
     # Docker captura stdout/stderr del contenedor igualmente.

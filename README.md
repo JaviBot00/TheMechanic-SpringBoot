@@ -63,7 +63,7 @@ Workshop Management API es el backend de un sistema de gestión para talleres me
 El proyecto sigue una **arquitectura por feature** (también llamada Vertical Slice), donde cada funcionalidad de negocio agrupa todas sus capas:
 
 ```
-com.workshopmanagement/
+com.hotguy.workshopmanagement/
 ├── auth/           → Autenticación JWT (login, refresh, logout)
 ├── client/         → Gestión de clientes
 ├── mechanic/       → Gestión de mecánicos

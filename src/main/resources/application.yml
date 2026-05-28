@@ -76,7 +76,7 @@ springdoc:
     path: /swagger-ui.html
     operations-sorter: method
     display-request-duration: true
-  packages-to-scan: com.workshopmanagement
+  packages-to-scan: com.hotguy.workshopmanagement
 
 # =============================================================================
 # ACTUATOR
@@ -98,4 +98,4 @@ logging:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%level] [%thread] %logger{36} - %msg%n"
   level:
     root: INFO
-    com.workshopmanagement: INFO
+    com.hotguy.workshopmanagement: INFO

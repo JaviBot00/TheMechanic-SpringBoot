@@ -82,7 +82,7 @@ server:
 logging:
   level:
     root: INFO
-    com.workshopmanagement: DEBUG
+    com.hotguy.workshopmanagement: DEBUG
     # Muestra los parámetros de las queries SQL (valores reales, no '?')
     org.hibernate.orm.jdbc.bind: TRACE
     org.hibernate.SQL: DEBUG
