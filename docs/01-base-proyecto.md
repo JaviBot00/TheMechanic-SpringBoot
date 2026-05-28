@@ -1,6 +1,6 @@
 # 01 — Base del proyecto
 
-## ¿Qué contiene este fascículo?
+## ¿Qué contiene esta feature?
 
 Este es el punto de partida del proyecto. No hay lógica de negocio todavía, pero sí toda la **infraestructura** sobre la que construiremos el resto: el fichero de dependencias, la clase de arranque, y la configuración por entornos.
 
@@ -8,7 +8,7 @@ Piénsalo como los cimientos de un edificio: si están bien hechos, todo lo que 
 
 ---
 
-## Ficheros entregados
+## Ficheros de esta feature
 
 ```cmd
 fasciculo-1/

@@ -1,12 +1,12 @@
 # 02 — Modelo de datos y Flyway
 
-## ¿Qué contiene este fascículo?
+## ¿Qué contiene esta feature?
 
 Las entidades JPA (las clases Java que se mapean a tablas de la BD), los scripts SQL de Flyway que crean esas tablas, y los datos de prueba para el entorno de desarrollo.
 
 ---
 
-## Ficheros entregados
+## Ficheros de esta feature
 
 ```cmd
 fasciculo-2/

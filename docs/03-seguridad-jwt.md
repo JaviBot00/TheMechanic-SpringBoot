@@ -1,12 +1,12 @@
 # 03 — Seguridad JWT
 
-## ¿Qué contiene este fascículo?
+## ¿Qué contiene esta feature?
 
 Todo el sistema de autenticación y autorización: el filtro JWT, la configuración de Spring Security, los endpoints de login/registro/refresh/logout, y el manejo centralizado de excepciones.
 
 ---
 
-## Ficheros entregados
+## Ficheros de esta feature
 
 ```cmd
 fasciculo-3/

@@ -34,7 +34,7 @@ Workshop Management API es el backend de un sistema de gestión para talleres me
 
 ---
 
-## 🛠️ Stack tecnológico
+## 🔨 Stack tecnológico
 
 | Tecnología | Versión | Uso |
 |---|---|---|
@@ -58,7 +58,7 @@ Workshop Management API es el backend de un sistema de gestión para talleres me
 
 ---
 
-## 🏗️ Arquitectura
+## 📦 Arquitectura
 
 El proyecto sigue una **arquitectura por feature** (también llamada Vertical Slice), donde cada funcionalidad de negocio agrupa todas sus capas:
 
@@ -85,7 +85,7 @@ Cada feature contiene:
 
 ---
 
-## ⚙️ Requisitos previos
+## 🧩 Requisitos previos
 
 - **Java 21** o superior ([Descargar](https://adoptium.net/))
 - **Maven 3.9+** ([Descargar](https://maven.apache.org/download.cgi))
