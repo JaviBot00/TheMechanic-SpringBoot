@@ -1,0 +1,92 @@
+# =============================================================================
+# .gitignore - Workshop Management API
+# =============================================================================
+# Este fichero indica a Git qué ficheros NO deben subirse al repositorio.
+# Objetivo: no versionar ficheros compilados, credenciales o configuración
+# local que varía entre desarrolladores.
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# MAVEN - Directorio de compilación
+# target/ contiene los .class compilados, el .jar final y los reportes.
+# Se regenera con 'mvn clean package', nunca debe subirse.
+# ---------------------------------------------------------------------------
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# ---------------------------------------------------------------------------
+# INTELLIJ IDEA - Configuración local del IDE
+# .idea/ contiene configuración específica del desarrollador.
+# *.iml son ficheros de módulo de IntelliJ.
+# Excepción: .idea/runConfigurations/ puede versionarse si el equipo
+# quiere compartir configuraciones de ejecución.
+# ---------------------------------------------------------------------------
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# ---------------------------------------------------------------------------
+# ECLIPSE / STS (Spring Tool Suite)
+# ---------------------------------------------------------------------------
+.classpath
+.project
+.settings/
+.springBeans
+.sts4-cache
+bin/
+
+# ---------------------------------------------------------------------------
+# VS CODE
+# ---------------------------------------------------------------------------
+.vscode/
+
+# ---------------------------------------------------------------------------
+# SISTEMA OPERATIVO
+# ---------------------------------------------------------------------------
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# ---------------------------------------------------------------------------
+# VARIABLES DE ENTORNO Y SECRETOS
+# CRÍTICO: Nunca versionar ficheros con credenciales o claves.
+# El fichero .env.example SÍ se versiona (con valores de ejemplo).
+# El fichero .env NO se versiona (contiene valores reales).
+# ---------------------------------------------------------------------------
+.env
+*.env.local
+*.env.*.local
+
+# ---------------------------------------------------------------------------
+# LOGS
+# Los ficheros de log son efímeros y pueden contener datos sensibles.
+# ---------------------------------------------------------------------------
+*.log
+logs/
+
+# ---------------------------------------------------------------------------
+# DOCKER
+# Los volúmenes de datos de Docker no se versionan.
+# ---------------------------------------------------------------------------
+postgres-data/
+docker-volumes/
+
+# ---------------------------------------------------------------------------
+# REPORTES DE COBERTURA (JaCoCo)
+# Se regeneran con 'mvn verify'. No necesario versionar.
+# ---------------------------------------------------------------------------
+**/jacoco.exec
+**/site/jacoco/

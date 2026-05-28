@@ -1,0 +1,101 @@
+# =============================================================================
+# CONFIGURACIÓN BASE - WORKSHOP MANAGEMENT API
+# =============================================================================
+# Este fichero contiene propiedades comunes a TODOS los perfiles (dev y prod).
+# Las propiedades específicas de cada entorno se definen en:
+#   - application-dev.yml  (perfil de desarrollo, H2 en memoria)
+#   - application-prod.yml (perfil de producción, PostgreSQL)
+#
+# Spring Boot carga primero este fichero y luego el fichero del perfil activo,
+# sobreescribiendo las propiedades duplicadas con los valores del perfil.
+# =============================================================================
+
+spring:
+
+  # ---------------------------------------------------------------------------
+  # PERFIL ACTIVO POR DEFECTO
+  # Al arrancar sin ninguna variable de entorno, Spring usará el perfil dev.
+  # En producción, la variable SPRING_PROFILES_ACTIVE=prod lo sobreescribe.
+  # No es necesario tocar la configuración del IDE.
+  # ---------------------------------------------------------------------------
+  profiles:
+    active: dev
+
+  # ---------------------------------------------------------------------------
+  # INFORMACIÓN DE LA APLICACIÓN
+  # ---------------------------------------------------------------------------
+  application:
+    name: workshop-management-api
+
+  # ---------------------------------------------------------------------------
+  # JPA / HIBERNATE
+  # ---------------------------------------------------------------------------
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: false
+        jdbc:
+          time_zone: UTC
+
+  # ---------------------------------------------------------------------------
+  # FLYWAY
+  # ---------------------------------------------------------------------------
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    table: flyway_schema_history
+
+  # ---------------------------------------------------------------------------
+  # JACKSON (serialización JSON)
+  # ---------------------------------------------------------------------------
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    deserialization:
+      fail-on-unknown-properties: false
+    default-property-inclusion: non_null
+
+# =============================================================================
+# SEGURIDAD JWT
+# =============================================================================
+security:
+  jwt:
+    secret-key: "dev-secret-key-that-must-be-changed-in-production-min-256-bits"
+    access-token-expiration: 3600000
+    refresh-token-expiration: 604800000
+
+# =============================================================================
+# SPRINGDOC / SWAGGER UI
+# =============================================================================
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    display-request-duration: true
+  packages-to-scan: com.workshopmanagement
+
+# =============================================================================
+# ACTUATOR
+# =============================================================================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+# =============================================================================
+# LOGGING
+# =============================================================================
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%level] [%thread] %logger{36} - %msg%n"
+  level:
+    root: INFO
+    com.workshopmanagement: INFO

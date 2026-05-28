@@ -1,0 +1,125 @@
+# =============================================================================
+# docker-compose.yml - Entorno de producción
+# =============================================================================
+# Levanta dos servicios:
+#   1. db: PostgreSQL 16 (base de datos)
+#   2. api: Workshop Management API (Spring Boot)
+#
+# Uso:
+#   Arrancar:  docker-compose up -d
+#   Parar:     docker-compose down
+#   Logs:      docker-compose logs -f api
+#   Rebuild:   docker-compose up -d --build
+#
+# IMPORTANTE: Copia .env.example a .env y rellena los valores antes de arrancar.
+# =============================================================================
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # BASE DE DATOS: PostgreSQL 16
+  # ---------------------------------------------------------------------------
+  db:
+    image: postgres:16-alpine
+    container_name: workshop-db
+    restart: unless-stopped
+
+    environment:
+      # Credenciales de la BD. Vienen del fichero .env (nunca hardcodeadas aquí).
+      POSTGRES_DB: ${POSTGRES_DB:-workshopdb}
+      POSTGRES_USER: ${POSTGRES_USER:-workshop_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?La variable POSTGRES_PASSWORD es obligatoria}
+      # Zona horaria del servidor PostgreSQL
+      PGTZ: UTC
+
+    ports:
+      # Solo exponer en localhost para acceso desde herramientas de BD (DBeaver, pgAdmin)
+      # En producción real, eliminar esta exposición de puertos.
+      - "5432:5432"
+
+    volumes:
+      # Volumen nombrado para persistir los datos entre reinicios del contenedor.
+      # Sin este volumen, los datos se pierden al hacer docker-compose down.
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      # Docker espera a que PostgreSQL esté listo antes de arrancar la API.
+      # pg_isready comprueba que el servidor acepta conexiones.
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-workshop_user} -d ${POSTGRES_DB:-workshopdb}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+    networks:
+      - workshop-network
+
+  # ---------------------------------------------------------------------------
+  # API: Workshop Management Spring Boot
+  # ---------------------------------------------------------------------------
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: workshop-api
+    restart: unless-stopped
+
+    # La API no arranca hasta que PostgreSQL esté sano (healthcheck verde)
+    depends_on:
+      db:
+        condition: service_healthy
+
+    environment:
+      # Perfil de Spring: prod (PostgreSQL, sin Swagger, logs a fichero)
+      SPRING_PROFILES_ACTIVE: prod
+
+      # Conexión a la BD. Referencia al servicio "db" por nombre de servicio Docker.
+      # Docker Compose crea una red interna donde los servicios se resuelven por nombre.
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-workshopdb}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-workshop_user}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?La variable POSTGRES_PASSWORD es obligatoria}
+
+      # JWT: la clave secreta DEBE ser una cadena larga y aleatoria en producción.
+      # Generar con: openssl rand -base64 64
+      SECURITY_JWT_SECRET_KEY: ${SECURITY_JWT_SECRET_KEY:?La variable SECURITY_JWT_SECRET_KEY es obligatoria}
+      SECURITY_JWT_ACCESS_TOKEN_EXPIRATION: ${SECURITY_JWT_ACCESS_TOKEN_EXPIRATION:-3600000}
+      SECURITY_JWT_REFRESH_TOKEN_EXPIRATION: ${SECURITY_JWT_REFRESH_TOKEN_EXPIRATION:-604800000}
+
+      SERVER_PORT: 8080
+
+    ports:
+      - "${SERVER_PORT:-8080}:8080"
+
+    volumes:
+      # Persistir los logs de la aplicación fuera del contenedor
+      - api_logs:/var/log/workshop-management
+
+    networks:
+      - workshop-network
+
+    healthcheck:
+      # Comprueba el endpoint de salud de Spring Boot Actuator
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+# =============================================================================
+# VOLÚMENES NOMBRADOS
+# Docker gestiona estos volúmenes externamente a los contenedores.
+# Persisten aunque se haga docker-compose down (no se borran hasta docker volume rm).
+# =============================================================================
+volumes:
+  postgres_data:
+    driver: local
+  api_logs:
+    driver: local
+
+# =============================================================================
+# RED INTERNA
+# Los servicios se comunican entre sí por nombre (db, api) sin exponer puertos.
+# =============================================================================
+networks:
+  workshop-network:
+    driver: bridge

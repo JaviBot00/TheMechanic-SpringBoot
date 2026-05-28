@@ -1,0 +1,101 @@
+# =============================================================================
+# PERFIL DE DESARROLLO (dev)
+# =============================================================================
+# Se activa al ejecutar la aplicación con:
+#   - IntelliJ IDEA: VM Options → -Dspring.profiles.active=dev
+#   - Terminal:      java -jar app.jar --spring.profiles.active=dev
+#   - Maven:         mvn spring-boot:run -Dspring-boot.run.profiles=dev
+#
+# Características de este perfil:
+#   ✓ Base de datos H2 en memoria (se destruye al parar la aplicación)
+#   ✓ Consola H2 accesible en /h2-console para inspeccionar datos
+#   ✓ Logs SQL visibles en consola para depuración
+#   ✓ Swagger UI siempre accesible (sin restricciones de seguridad)
+#   ✓ Datos de prueba cargados automáticamente por Flyway
+# =============================================================================
+
+spring:
+
+  # ---------------------------------------------------------------------------
+  # BASE DE DATOS H2 EN MEMORIA
+  # H2 es una BD Java embebida. "mem:workshopdb" crea una BD temporal
+  # que vive solo mientras la aplicación está en ejecución.
+  # ---------------------------------------------------------------------------
+  datasource:
+    # URL de conexión H2 en memoria.
+    # DB_CLOSE_DELAY=-1: mantiene la BD viva mientras el JVM esté activo.
+    # DB_CLOSE_ON_EXIT=FALSE: no cerrar la BD al salir del contexto Spring.
+    # MODE=PostgreSQL: emula comportamiento de PostgreSQL (tipos, funciones).
+    url: jdbc:h2:mem:workshopdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+
+  # ---------------------------------------------------------------------------
+  # CONSOLA WEB DE H2
+  # Interfaz visual para consultar la BD H2 durante el desarrollo.
+  # Accesible en: http://localhost:8080/h2-console
+  # JDBC URL a introducir en la consola: jdbc:h2:mem:workshopdb
+  # ---------------------------------------------------------------------------
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        # Permite conexiones desde la red local (no solo localhost).
+        web-allow-others: false
+
+  # ---------------------------------------------------------------------------
+  # FLYWAY EN DESARROLLO
+  # Además de los scripts de migración base (V1__, V2__...),
+  # carga el script de datos de prueba solo en este perfil.
+  # ---------------------------------------------------------------------------
+  flyway:
+    locations:
+      - classpath:db/migration     # Scripts de esquema (todos los perfiles)
+      - classpath:db/seed          # Datos de prueba (SOLO perfil dev)
+    # Limpia la BD antes de migrar (permite reinicio limpio en dev).
+    # NUNCA activar en producción: borra todos los datos.
+    clean-on-validation-error: false
+
+  # ---------------------------------------------------------------------------
+  # JPA EN DESARROLLO
+  # ---------------------------------------------------------------------------
+  jpa:
+    # Muestra las queries SQL generadas por Hibernate en la consola.
+    # Muy útil para depurar, pero genera mucho ruido en producción.
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+# =============================================================================
+# SERVIDOR EN DESARROLLO
+# =============================================================================
+server:
+  port: 8080
+
+# =============================================================================
+# LOGGING EN DESARROLLO
+# Nivel DEBUG para el código propio, INFO para Spring.
+# =============================================================================
+logging:
+  level:
+    root: INFO
+    com.workshopmanagement: DEBUG
+    # Muestra los parámetros de las queries SQL (valores reales, no '?')
+    org.hibernate.orm.jdbc.bind: TRACE
+    org.hibernate.SQL: DEBUG
+
+# =============================================================================
+# ACTUATOR EN DESARROLLO
+# Exponemos todos los endpoints para facilitar la depuración.
+# =============================================================================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
