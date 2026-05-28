@@ -4,6 +4,7 @@ import com.hotguy.workshopmanagement.auth.model.User;
 import com.hotguy.workshopmanagement.common.model.Person;
 import com.hotguy.workshopmanagement.vehicle.model.Vehicle;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,7 +38,9 @@ import java.util.List;
 @SQLRestriction("deleted_at IS NULL")
 public class Client extends Person {
 
-    /** Identificador interno autoincremental. */
+    /**
+     * Identificador interno autoincremental.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -58,6 +61,7 @@ public class Client extends Person {
      * {@code orphanRemoval = true} elimina los vehículos huérfanos si se
      * desvinculan de la lista.
      */
+    @Builder.Default
     @OneToMany(mappedBy = "proprietary", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vehicle> vehicles = new ArrayList<>();
 

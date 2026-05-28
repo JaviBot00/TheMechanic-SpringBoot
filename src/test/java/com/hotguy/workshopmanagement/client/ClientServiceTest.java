@@ -22,7 +22,8 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.*;
 
 /**
@@ -60,24 +61,24 @@ class ClientServiceTest {
     @BeforeEach
     void setUp() {
         testClient = Client.builder()
-                .id(1L)
-                .clientCode(100)
-                .name("Juan")
-                .surname1("García")
-                .surname2("López")
-                .nif("12345678A")
-                .email("juan@test.com")
-                .telephone("600000000")
-                .build();
+            .id(1L)
+            .clientCode(100)
+            .name("Juan")
+            .surname1("García")
+            .surname2("López")
+            .nif("12345678A")
+            .email("juan@test.com")
+            .telephone("600000000")
+            .build();
 
         testRequest = new ClientRequest(
-                100, "Juan", "García", "López",
-                "12345678A", "juan@test.com", "600000000");
+            100, "Juan", "García", "López",
+            "12345678A", "juan@test.com", "600000000");
 
         testResponse = new ClientResponse(
-                1L, 100, "Juan", "García", "López",
-                "12345678A", "juan@test.com", "600000000",
-                0, Instant.now(), Instant.now());
+            1L, 100, "Juan", "García", "López",
+            "12345678A", "juan@test.com", "600000000",
+            0, Instant.now(), Instant.now());
     }
 
     @Test
@@ -107,8 +108,8 @@ class ClientServiceTest {
 
         // When & Then
         assertThatThrownBy(() -> clientService.createClient(testRequest))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("12345678A");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("12345678A");
 
         then(clientRepository).should(never()).save(any());
     }
@@ -122,8 +123,8 @@ class ClientServiceTest {
 
         // When & Then
         assertThatThrownBy(() -> clientService.createClient(testRequest))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("100");
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("100");
     }
 
     @Test
@@ -148,8 +149,8 @@ class ClientServiceTest {
 
         // When & Then
         assertThatThrownBy(() -> clientService.getClientById(99L))
-                .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("99");
+            .isInstanceOf(ResourceNotFoundException.class)
+            .hasMessageContaining("99");
     }
 
     @Test

@@ -20,16 +20,16 @@ import java.time.LocalDate;
  * @param updatedAt        fecha de última modificación
  */
 public record MechanicResponse(
-        Long id,
-        String name,
-        String surname1,
-        String surname2,
-        String nif,
-        String email,
-        String telephone,
-        LocalDate registrationDate,
-        String specialty,
-        int taskCount,
-        Instant createdAt,
-        Instant updatedAt) {
+    Long id,
+    String name,
+    String surname1,
+    String surname2,
+    String nif,
+    String email,
+    String telephone,
+    LocalDate registrationDate,
+    String specialty,
+    int taskCount,
+    Instant createdAt,
+    Instant updatedAt) {
 }

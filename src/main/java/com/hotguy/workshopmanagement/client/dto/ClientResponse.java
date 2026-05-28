@@ -24,15 +24,15 @@ import java.time.Instant;
  * @param updatedAt    fecha de última modificación
  */
 public record ClientResponse(
-        Long id,
-        Integer clientCode,
-        String name,
-        String surname1,
-        String surname2,
-        String nif,
-        String email,
-        String telephone,
-        int vehicleCount,
-        Instant createdAt,
-        Instant updatedAt) {
+    Long id,
+    Integer clientCode,
+    String name,
+    String surname1,
+    String surname2,
+    String nif,
+    String email,
+    String telephone,
+    int vehicleCount,
+    Instant createdAt,
+    Instant updatedAt) {
 }

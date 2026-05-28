@@ -16,25 +16,39 @@ package com.hotguy.workshopmanagement.vehicle.model;
  */
 public enum VehicleType {
 
-    /** Motocicleta. Tarifa: 20€/hora, sin cargo fijo. */
+    /**
+     * Motocicleta. Tarifa: 20€/hora, sin cargo fijo.
+     */
     MOTORCYCLE(20f, 0f, "Motocicleta"),
 
-    /** Turismo / coche particular. Tarifa: 25€/hora, sin cargo fijo. */
+    /**
+     * Turismo / coche particular. Tarifa: 25€/hora, sin cargo fijo.
+     */
     CAR(25f, 0f, "Coche"),
 
-    /** Furgoneta. Tarifa: 30€/hora + 30€ fijo por dificultad. */
+    /**
+     * Furgoneta. Tarifa: 30€/hora + 30€ fijo por dificultad.
+     */
     VAN(30f, 30f, "Furgoneta"),
 
-    /** Camión. Tarifa: 40€/hora + 50€ fijo por dificultad. */
+    /**
+     * Camión. Tarifa: 40€/hora + 50€ fijo por dificultad.
+     */
     TRUCK(40f, 50f, "Camión");
 
-    /** Precio por hora de mano de obra en euros. */
+    /**
+     * Precio por hora de mano de obra en euros.
+     */
     private final float hourlyRate;
 
-    /** Cargo fijo adicional en euros (por complejidad del vehículo). */
+    /**
+     * Cargo fijo adicional en euros (por complejidad del vehículo).
+     */
     private final float fixedFee;
 
-    /** Nombre legible para mostrar en la interfaz. */
+    /**
+     * Nombre legible para mostrar en la interfaz.
+     */
     private final String displayName;
 
     VehicleType(float hourlyRate, float fixedFee, String displayName) {

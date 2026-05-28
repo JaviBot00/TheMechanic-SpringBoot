@@ -65,11 +65,11 @@ public class AuthService {
         // Internamente: carga el UserDetails por username, compara el hash de la
         // contraseña.
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.username(), request.password()));
+            new UsernamePasswordAuthenticationToken(request.username(), request.password()));
 
         // 2. Si llegamos aquí, las credenciales son correctas. Obtener el usuario.
         User user = userRepository.findByUsername(request.username())
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+            .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
 
         // 3. Revocar tokens anteriores del usuario (seguridad: una sesión activa por
         // usuario).
@@ -94,23 +94,23 @@ public class AuthService {
 
         // Construir el usuario con la contraseña encriptada (nunca texto plano)
         User.UserBuilder<?, ?> userBuilder = User.builder()
-                .username(request.username())
-                .password(passwordEncoder.encode(request.password()))
-                .role(request.role())
-                .enabled(true);
+            .username(request.username())
+            .password(passwordEncoder.encode(request.password()))
+            .role(request.role())
+            .enabled(true);
 
         // Vincular al cliente si se proporcionó clientId
         if (request.clientId() != null) {
             var client = clientRepository.findById(request.clientId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado: " + request.clientId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado: " + request.clientId()));
             userBuilder.client(client);
         }
 
         // Vincular al mecánico si se proporcionó mechanicId
         if (request.mechanicId() != null) {
             var mechanic = mechanicRepository.findById(request.mechanicId())
-                    .orElseThrow(
-                            () -> new ResourceNotFoundException("Mecánico no encontrado: " + request.mechanicId()));
+                .orElseThrow(
+                    () -> new ResourceNotFoundException("Mecánico no encontrado: " + request.mechanicId()));
             userBuilder.mechanic(mechanic);
         }
 
@@ -133,7 +133,7 @@ public class AuthService {
      */
     public AuthResponse refresh(RefreshRequest request) {
         RefreshToken storedToken = refreshTokenRepository.findByToken(request.refreshToken())
-                .orElseThrow(() -> new IllegalArgumentException("Refresh token no encontrado"));
+            .orElseThrow(() -> new IllegalArgumentException("Refresh token no encontrado"));
 
         if (!storedToken.isValid()) {
             throw new IllegalArgumentException("Refresh token expirado o revocado");
@@ -155,7 +155,7 @@ public class AuthService {
      */
     public void logout(String username) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+            .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
         refreshTokenRepository.revokeAllUserTokens(user);
     }
 
@@ -177,11 +177,11 @@ public class AuthService {
         // Generar refresh token (UUID aleatorio, stateful: guardado en BD)
         String rawRefreshToken = UUID.randomUUID().toString();
         RefreshToken refreshToken = RefreshToken.builder()
-                .token(rawRefreshToken)
-                .user(user)
-                .revoked(false)
-                .expiresAt(Instant.now().plusMillis(jwtProperties.getRefreshTokenExpiration()))
-                .build();
+            .token(rawRefreshToken)
+            .user(user)
+            .revoked(false)
+            .expiresAt(Instant.now().plusMillis(jwtProperties.getRefreshTokenExpiration()))
+            .build();
         refreshTokenRepository.save(refreshToken);
 
         String role = user.getAuthorities().iterator().next().getAuthority();

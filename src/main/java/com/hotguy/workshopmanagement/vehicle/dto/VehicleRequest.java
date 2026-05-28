@@ -14,11 +14,11 @@ import jakarta.validation.constraints.Size;
  * @param clientId         ID del propietario
  */
 public record VehicleRequest(
-        @NotBlank(message = "La matrícula es obligatoria") @Size(max = 20, message = "La matrícula no puede superar 20 caracteres") String registrationCode,
+    @NotBlank(message = "La matrícula es obligatoria") @Size(max = 20, message = "La matrícula no puede superar 20 caracteres") String registrationCode,
 
-        @NotBlank(message = "El modelo es obligatorio") @Size(max = 150) String model,
+    @NotBlank(message = "El modelo es obligatorio") @Size(max = 150) String model,
 
-        @NotNull(message = "El tipo de vehículo es obligatorio") VehicleType type,
+    @NotNull(message = "El tipo de vehículo es obligatorio") VehicleType type,
 
-        @NotNull(message = "El ID del propietario es obligatorio") Long clientId) {
+    @NotNull(message = "El ID del propietario es obligatorio") Long clientId) {
 }

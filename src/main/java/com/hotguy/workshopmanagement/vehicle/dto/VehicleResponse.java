@@ -1,6 +1,7 @@
 package com.hotguy.workshopmanagement.vehicle.dto;
 
 import com.hotguy.workshopmanagement.vehicle.model.VehicleType;
+
 import java.time.Instant;
 
 /**
@@ -22,17 +23,17 @@ import java.time.Instant;
  * @param updatedAt        fecha de última modificación
  */
 public record VehicleResponse(
-        Long id,
-        String registrationCode,
-        String model,
-        VehicleType type,
-        float hourlyRate,
-        float fixedFee,
-        Long clientId,
-        String clientName,
-        int taskCount,
-        float completionPct,
-        float totalRevenue,
-        Instant createdAt,
-        Instant updatedAt) {
+    Long id,
+    String registrationCode,
+    String model,
+    VehicleType type,
+    float hourlyRate,
+    float fixedFee,
+    Long clientId,
+    String clientName,
+    int taskCount,
+    float completionPct,
+    float totalRevenue,
+    Instant createdAt,
+    Instant updatedAt) {
 }

@@ -1,6 +1,7 @@
 package com.hotguy.workshopmanagement.mechanic.dto;
 
 import jakarta.validation.constraints.*;
+
 import java.time.LocalDate;
 
 /**
@@ -16,19 +17,19 @@ import java.time.LocalDate;
  * @param specialty        especialidad principal
  */
 public record MechanicRequest(
-        @NotBlank(message = "El nombre es obligatorio") @Size(max = 100) String name,
+    @NotBlank(message = "El nombre es obligatorio") @Size(max = 100) String name,
 
-        @NotBlank(message = "El primer apellido es obligatorio") @Size(max = 100) String surname1,
+    @NotBlank(message = "El primer apellido es obligatorio") @Size(max = 100) String surname1,
 
-        @Size(max = 100) String surname2,
+    @Size(max = 100) String surname2,
 
-        @NotBlank(message = "El NIF es obligatorio") @Pattern(regexp = "^[0-9]{8}[A-Z]$", message = "El NIF debe tener 8 dígitos y una letra mayúscula") String nif,
+    @NotBlank(message = "El NIF es obligatorio") @Pattern(regexp = "^[0-9]{8}[A-Z]$", message = "El NIF debe tener 8 dígitos y una letra mayúscula") String nif,
 
-        @NotBlank(message = "El email es obligatorio") @Email String email,
+    @NotBlank(message = "El email es obligatorio") @Email String email,
 
-        @Size(max = 20) String telephone,
+    @Size(max = 20) String telephone,
 
-        @NotNull(message = "La fecha de registro es obligatoria") @PastOrPresent(message = "La fecha de registro no puede ser futura") LocalDate registrationDate,
+    @NotNull(message = "La fecha de registro es obligatoria") @PastOrPresent(message = "La fecha de registro no puede ser futura") LocalDate registrationDate,
 
-        @NotBlank(message = "La especialidad es obligatoria") @Size(max = 100) String specialty) {
+    @NotBlank(message = "La especialidad es obligatoria") @Size(max = 100) String specialty) {
 }

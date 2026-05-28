@@ -4,7 +4,10 @@ import com.hotguy.workshopmanagement.client.model.Client;
 import com.hotguy.workshopmanagement.common.audit.AuditableEntity;
 import com.hotguy.workshopmanagement.mechanic.model.Mechanic;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -70,6 +73,7 @@ public class User extends AuditableEntity implements UserDetails {
      * Indica si la cuenta está activa.
      * El admin puede desactivar cuentas sin borrarlas.
      */
+    @Builder.Default
     @Column(name = "enabled", nullable = false)
     private boolean enabled = true;
 

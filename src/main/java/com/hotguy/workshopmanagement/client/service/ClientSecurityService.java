@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * <p>
  * Se usa en expresiones {@code @PreAuthorize} para comprobar si el usuario
  * autenticado es el propietario del recurso solicitado:
- * 
+ *
  * <pre>
  * {@code @PreAuthorize("hasRole('ADMIN') or @clientSecurityService.isOwner(authentication, #id)")}
  * </pre>

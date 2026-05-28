@@ -40,22 +40,22 @@ public class MechanicController {
     @GetMapping
     @Operation(summary = "Listar mecánicos")
     public ResponseEntity<Page<MechanicResponse>> listMechanics(
-            @PageableDefault(size = 20, sort = "surname1") Pageable pageable) {
+        @PageableDefault(size = 20, sort = "surname1") Pageable pageable) {
         return ResponseEntity.ok(mechanicService.listMechanics(pageable));
     }
 
     @GetMapping("/search")
     @Operation(summary = "Buscar mecánicos por especialidad")
     public ResponseEntity<Page<MechanicResponse>> findBySpecialty(
-            @RequestParam String specialty,
-            @PageableDefault(size = 20) Pageable pageable) {
+        @RequestParam String specialty,
+        @PageableDefault(size = 20) Pageable pageable) {
         return ResponseEntity.ok(mechanicService.findBySpecialty(specialty, pageable));
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Actualizar mecánico")
     public ResponseEntity<MechanicResponse> updateMechanic(
-            @PathVariable Long id, @Valid @RequestBody MechanicRequest request) {
+        @PathVariable Long id, @Valid @RequestBody MechanicRequest request) {
         return ResponseEntity.ok(mechanicService.updateMechanic(id, request));
     }
 

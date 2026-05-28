@@ -27,15 +27,21 @@ import lombok.experimental.SuperBuilder;
 @MappedSuperclass
 public abstract class Person extends AuditableEntity {
 
-    /** Nombre de pila. */
+    /**
+     * Nombre de pila.
+     */
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
-    /** Primer apellido. */
+    /**
+     * Primer apellido.
+     */
     @Column(name = "surname1", nullable = false, length = 100)
     private String surname1;
 
-    /** Segundo apellido (opcional). */
+    /**
+     * Segundo apellido (opcional).
+     */
     @Column(name = "surname2", length = 100)
     private String surname2;
 
@@ -46,11 +52,15 @@ public abstract class Person extends AuditableEntity {
     @Column(name = "nif", nullable = false, unique = true, length = 20)
     private String nif;
 
-    /** Correo electrónico de contacto. */
+    /**
+     * Correo electrónico de contacto.
+     */
     @Column(name = "email", nullable = false, length = 150)
     private String email;
 
-    /** Número de teléfono de contacto. */
+    /**
+     * Número de teléfono de contacto.
+     */
     @Column(name = "telephone", length = 20)
     private String telephone;
 }

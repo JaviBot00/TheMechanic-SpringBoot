@@ -37,14 +37,19 @@ public class ReportService {
         long totalVehicles = vehicleRepository.countActiveVehicles();
         long totalTasks = taskRepository.count();
         long pendingTasks = taskRepository.countPendingTasks();
-        Double revenue = taskRepository.sumTotalRevenue();
+        Double revenue = taskRepository.findByPaidTrue()
+            .stream()
+            .mapToDouble(t -> t.getRealHours()
+                * t.getVehicle().getType().getHourlyRate()
+                + t.getVehicle().getType().getFixedFee())
+            .sum();
 
         return new SummaryReportResponse(
-                totalClients,
-                totalMechanics,
-                totalVehicles,
-                totalTasks,
-                pendingTasks,
-                revenue != null ? revenue : 0.0);
+            totalClients,
+            totalMechanics,
+            totalVehicles,
+            totalTasks,
+            pendingTasks,
+            revenue != null ? revenue : 0.0);
     }
 }

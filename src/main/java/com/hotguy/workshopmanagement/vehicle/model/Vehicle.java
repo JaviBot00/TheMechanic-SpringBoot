@@ -4,6 +4,7 @@ import com.hotguy.workshopmanagement.client.model.Client;
 import com.hotguy.workshopmanagement.common.audit.AuditableEntity;
 import com.hotguy.workshopmanagement.task.model.WorkshopTask;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -46,7 +47,9 @@ public class Vehicle extends AuditableEntity {
     @Column(name = "registration_code", nullable = false, unique = true, length = 20)
     private String registrationCode;
 
-    /** Marca y modelo del vehículo (ej. "Toyota Corolla"). */
+    /**
+     * Marca y modelo del vehículo (ej. "Toyota Corolla").
+     */
     @Column(name = "model", nullable = false, length = 150)
     private String model;
 
@@ -71,6 +74,7 @@ public class Vehicle extends AuditableEntity {
     /**
      * Historial de tareas de taller realizadas sobre este vehículo.
      */
+    @Builder.Default
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WorkshopTask> workshopTasks = new ArrayList<>();
 
@@ -94,8 +98,8 @@ public class Vehicle extends AuditableEntity {
         if (workshopTasks.isEmpty())
             return 0f;
         long finished = workshopTasks.stream()
-                .filter(WorkshopTask::isFinished)
-                .count();
+            .filter(WorkshopTask::isFinished)
+            .count();
         return (finished * 100f) / workshopTasks.size();
     }
 
@@ -107,8 +111,8 @@ public class Vehicle extends AuditableEntity {
      */
     public float getTotalRevenue() {
         return workshopTasks.stream()
-                .filter(WorkshopTask::isPaid)
-                .map(WorkshopTask::getTotalCost)
-                .reduce(0f, Float::sum);
+            .filter(WorkshopTask::isPaid)
+            .map(WorkshopTask::getTotalCost)
+            .reduce(0f, Float::sum);
     }
 }

@@ -15,13 +15,13 @@ import jakarta.validation.constraints.Size;
  * @param mechanicId ID del mecánico a vincular (opcional, para rol MECHANIC)
  */
 public record RegisterRequest(
-        @NotBlank(message = "El nombre de usuario es obligatorio") String username,
+    @NotBlank(message = "El nombre de usuario es obligatorio") String username,
 
-        @NotBlank(message = "La contraseña es obligatoria") @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres") String password,
+    @NotBlank(message = "La contraseña es obligatoria") @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres") String password,
 
-        @NotNull(message = "El rol es obligatorio") Role role,
+    @NotNull(message = "El rol es obligatorio") Role role,
 
-        Long clientId,
+    Long clientId,
 
-        Long mechanicId) {
+    Long mechanicId) {
 }

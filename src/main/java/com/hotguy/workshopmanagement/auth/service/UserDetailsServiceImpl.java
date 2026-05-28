@@ -38,14 +38,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      *
      * @param username el nombre de usuario a buscar
      * @return el {@link UserDetails} del usuario (nuestra entidad {@code User} lo
-     *         implementa)
+     * implementa)
      * @throws UsernameNotFoundException si no existe el usuario
      */
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(
-                        "Usuario no encontrado con username: " + username));
+            .orElseThrow(() -> new UsernameNotFoundException(
+                "Usuario no encontrado con username: " + username));
     }
 }

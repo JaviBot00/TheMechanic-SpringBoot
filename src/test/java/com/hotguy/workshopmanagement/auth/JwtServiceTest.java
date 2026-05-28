@@ -44,18 +44,18 @@ class JwtServiceTest {
     void setUp() {
         // Configurar las propiedades JWT para los tests
         given(jwtProperties.getSecretKey())
-                .willReturn("test-secret-key-that-is-long-enough-for-hs256-algorithm");
+            .willReturn("test-secret-key-that-is-long-enough-for-hs256-algorithm");
         given(jwtProperties.getAccessTokenExpiration())
-                .willReturn(3600000L); // 1 hora
+            .willReturn(3600000L); // 1 hora
 
         // Crear un usuario de prueba
         testUser = User.builder()
-                .id(1L)
-                .username("testuser")
-                .password("hashedpassword")
-                .role(Role.CLIENT)
-                .enabled(true)
-                .build();
+            .id(1L)
+            .username("testuser")
+            .password("hashedpassword")
+            .role(Role.CLIENT)
+            .enabled(true)
+            .build();
     }
 
     @Test
@@ -86,10 +86,10 @@ class JwtServiceTest {
         String token = jwtService.generateAccessToken(testUser);
 
         User otherUser = User.builder()
-                .username("otheruser")
-                .role(Role.MECHANIC)
-                .enabled(true)
-                .build();
+            .username("otheruser")
+            .role(Role.MECHANIC)
+            .enabled(true)
+            .build();
 
         assertThat(jwtService.isTokenValid(token, otherUser)).isFalse();
     }

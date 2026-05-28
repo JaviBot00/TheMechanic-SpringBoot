@@ -74,7 +74,7 @@ public class ClientService {
      */
     @Transactional(readOnly = true)
     @PreAuthorize("hasAnyRole('ADMIN','MECHANIC') or " +
-            "(hasRole('CLIENT') and @clientSecurityService.isOwner(authentication, #id))")
+        "(hasRole('CLIENT') and @clientSecurityService.isOwner(authentication, #id))")
     public ClientResponse getClientById(Long id) {
         return clientMapper.toResponse(findClientOrThrow(id));
     }
@@ -102,7 +102,7 @@ public class ClientService {
     @PreAuthorize("hasAnyRole('ADMIN', 'MECHANIC')")
     public Page<ClientResponse> findClientsBySurname(String surname1, Pageable pageable) {
         return clientRepository.findBySurname1ContainingIgnoreCase(surname1, pageable)
-                .map(clientMapper::toResponse);
+            .map(clientMapper::toResponse);
     }
 
     /**
@@ -116,8 +116,8 @@ public class ClientService {
     @PreAuthorize("hasAnyRole('ADMIN', 'MECHANIC')")
     public ClientResponse findClientByNif(String nif) {
         return clientRepository.findByNif(nif)
-                .map(clientMapper::toResponse)
-                .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado con NIF: " + nif));
+            .map(clientMapper::toResponse)
+            .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado con NIF: " + nif));
     }
 
     /**
@@ -175,6 +175,6 @@ public class ClientService {
      */
     private Client findClientOrThrow(Long id) {
         return clientRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado: " + id));
+            .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado: " + id));
     }
 }

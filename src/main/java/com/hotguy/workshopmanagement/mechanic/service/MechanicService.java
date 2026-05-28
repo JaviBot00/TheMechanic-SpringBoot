@@ -24,7 +24,9 @@ public class MechanicService {
     private final MechanicRepository mechanicRepository;
     private final MechanicMapper mechanicMapper;
 
-    /** Crea un nuevo mecánico. Solo ADMIN. */
+    /**
+     * Crea un nuevo mecánico. Solo ADMIN.
+     */
     @PreAuthorize("hasRole('ADMIN')")
     public MechanicResponse createMechanic(MechanicRequest request) {
         if (mechanicRepository.existsByNif(request.nif())) {
@@ -33,29 +35,37 @@ public class MechanicService {
         return mechanicMapper.toResponse(mechanicRepository.save(mechanicMapper.toEntity(request)));
     }
 
-    /** Obtiene un mecánico por ID. ADMIN y MECHANIC (el propio) pueden acceder. */
+    /**
+     * Obtiene un mecánico por ID. ADMIN y MECHANIC (el propio) pueden acceder.
+     */
     @Transactional(readOnly = true)
     @PreAuthorize("hasAnyRole('ADMIN','MECHANIC')")
     public MechanicResponse getMechanicById(Long id) {
         return mechanicMapper.toResponse(findMechanicOrThrow(id));
     }
 
-    /** Lista todos los mecánicos activos con paginación. */
+    /**
+     * Lista todos los mecánicos activos con paginación.
+     */
     @Transactional(readOnly = true)
     @PreAuthorize("hasAnyRole('ADMIN','MECHANIC')")
     public Page<MechanicResponse> listMechanics(Pageable pageable) {
         return mechanicRepository.findAll(pageable).map(mechanicMapper::toResponse);
     }
 
-    /** Busca mecánicos por especialidad. */
+    /**
+     * Busca mecánicos por especialidad.
+     */
     @Transactional(readOnly = true)
     @PreAuthorize("hasAnyRole('ADMIN','MECHANIC')")
     public Page<MechanicResponse> findBySpecialty(String specialty, Pageable pageable) {
         return mechanicRepository.findBySpecialtyContainingIgnoreCase(specialty, pageable)
-                .map(mechanicMapper::toResponse);
+            .map(mechanicMapper::toResponse);
     }
 
-    /** Actualiza datos de un mecánico. Solo ADMIN. */
+    /**
+     * Actualiza datos de un mecánico. Solo ADMIN.
+     */
     @PreAuthorize("hasRole('ADMIN')")
     public MechanicResponse updateMechanic(Long id, MechanicRequest request) {
         Mechanic mechanic = findMechanicOrThrow(id);
@@ -74,16 +84,18 @@ public class MechanicService {
     public void deleteMechanic(Long id) {
         Mechanic mechanic = findMechanicOrThrow(id);
         long activeTasks = mechanic.getWorkshopTasks().stream()
-                .filter(t -> !t.isFinished()).count();
+            .filter(t -> !t.isFinished()).count();
         if (activeTasks > 0) {
             throw new IllegalStateException(
-                    "No se puede eliminar el mecánico: tiene " + activeTasks + " tarea(s) activa(s) asignada(s)");
+                "No se puede eliminar el mecánico: tiene " + activeTasks + " tarea(s) activa(s) asignada(s)");
         }
         mechanic.softDelete();
         mechanicRepository.save(mechanic);
     }
 
-    /** Devuelve el número total de mecánicos activos. */
+    /**
+     * Devuelve el número total de mecánicos activos.
+     */
     @Transactional(readOnly = true)
     @PreAuthorize("hasAnyRole('ADMIN','MECHANIC')")
     public long countMechanics() {
@@ -92,6 +104,6 @@ public class MechanicService {
 
     private Mechanic findMechanicOrThrow(Long id) {
         return mechanicRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Mecánico no encontrado: " + id));
+            .orElseThrow(() -> new ResourceNotFoundException("Mecánico no encontrado: " + id));
     }
 }

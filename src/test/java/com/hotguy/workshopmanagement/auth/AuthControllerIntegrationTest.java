@@ -9,8 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
@@ -18,7 +18,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Tests de integración para el flujo de autenticación JWT.
@@ -64,11 +65,11 @@ class AuthControllerIntegrationTest {
     void setUp() {
         // Crear un usuario de prueba antes de cada test
         User user = User.builder()
-                .username("testuser")
-                .password(passwordEncoder.encode("password123"))
-                .role(Role.CLIENT)
-                .enabled(true)
-                .build();
+            .username("testuser")
+            .password(passwordEncoder.encode("password123"))
+            .role(Role.CLIENT)
+            .enabled(true)
+            .build();
         userRepository.save(user);
     }
 
@@ -80,11 +81,11 @@ class AuthControllerIntegrationTest {
         mockMvc.perform(post("/api/v1/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.accessToken").isNotEmpty())
-                .andExpect(jsonPath("$.refreshToken").isNotEmpty())
-                .andExpect(jsonPath("$.tokenType").value("Bearer"))
-                .andExpect(jsonPath("$.role").value("ROLE_CLIENT"));
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.accessToken").isNotEmpty())
+            .andExpect(jsonPath("$.refreshToken").isNotEmpty())
+            .andExpect(jsonPath("$.tokenType").value("Bearer"))
+            .andExpect(jsonPath("$.role").value("ROLE_CLIENT"));
     }
 
     @Test
@@ -95,7 +96,7 @@ class AuthControllerIntegrationTest {
         mockMvc.perform(post("/api/v1/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isUnauthorized());
+            .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -106,7 +107,7 @@ class AuthControllerIntegrationTest {
         mockMvc.perform(post("/api/v1/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isUnauthorized());
+            .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -117,15 +118,15 @@ class AuthControllerIntegrationTest {
         mockMvc.perform(post("/api/v1/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errors.username").exists());
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.errors.username").exists());
     }
 
     @Test
     @DisplayName("Acceder a endpoint protegido sin token debe devolver 401")
     void accessProtectedEndpointWithoutToken_shouldReturn401() throws Exception {
         mockMvc.perform(post("/api/v1/clients"))
-                .andExpect(status().isUnauthorized());
+            .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -136,7 +137,7 @@ class AuthControllerIntegrationTest {
         String response = mockMvc.perform(post("/api/v1/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(loginReq)))
-                .andReturn().getResponse().getContentAsString();
+            .andReturn().getResponse().getContentAsString();
 
         String accessToken = objectMapper.readTree(response).get("accessToken").asText();
 
@@ -145,6 +146,6 @@ class AuthControllerIntegrationTest {
                 .header("Authorization", "Bearer " + accessToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"username\":\"nuevo\",\"password\":\"pass1234\",\"role\":\"CLIENT\"}"))
-                .andExpect(status().isForbidden());
+            .andExpect(status().isForbidden());
     }
 }

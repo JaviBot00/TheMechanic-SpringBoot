@@ -5,8 +5,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,7 +27,7 @@ import java.io.IOException;
  *
  * <p>
  * Flujo del filtro:
- * 
+ *
  * <pre>
  * Petición HTTP
  *   │
@@ -68,9 +68,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      */
     @Override
     protected void doFilterInternal(
-            @NonNull HttpServletRequest request,
-            @NonNull HttpServletResponse response,
-            @NonNull FilterChain filterChain) throws ServletException, IOException {
+        @NonNull HttpServletRequest request,
+        @NonNull HttpServletResponse response,
+        @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         // 1. Extraer el header de autorización
         final String authHeader = request.getHeader("Authorization");
@@ -112,9 +112,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 // credentials = null porque ya no necesitamos la contraseña (el JWT es la
                 // prueba)
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities());
+                    userDetails,
+                    null,
+                    userDetails.getAuthorities());
 
                 // Añadir detalles de la petición (IP, session ID...) al objeto de autenticación
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

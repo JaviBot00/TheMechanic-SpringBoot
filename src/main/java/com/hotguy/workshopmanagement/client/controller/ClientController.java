@@ -65,7 +65,7 @@ public class ClientController {
     @GetMapping("/{id}")
     @Operation(summary = "Obtener cliente por ID")
     public ResponseEntity<ClientResponse> getClientById(
-            @Parameter(description = "ID del cliente") @PathVariable Long id) {
+        @Parameter(description = "ID del cliente") @PathVariable Long id) {
         return ResponseEntity.ok(clientService.getClientById(id));
     }
 
@@ -85,7 +85,7 @@ public class ClientController {
     @GetMapping
     @Operation(summary = "Listar clientes")
     public ResponseEntity<Page<ClientResponse>> listClients(
-            @PageableDefault(size = 20, sort = "surname1") Pageable pageable) {
+        @PageableDefault(size = 20, sort = "surname1") Pageable pageable) {
         return ResponseEntity.ok(clientService.listClients(pageable));
     }
 
@@ -100,8 +100,8 @@ public class ClientController {
     @GetMapping("/search")
     @Operation(summary = "Buscar clientes por apellido")
     public ResponseEntity<Page<ClientResponse>> findBySurname(
-            @Parameter(description = "Primer apellido a buscar") @RequestParam String surname1,
-            @PageableDefault(size = 20) Pageable pageable) {
+        @Parameter(description = "Primer apellido a buscar") @RequestParam String surname1,
+        @PageableDefault(size = 20) Pageable pageable) {
         return ResponseEntity.ok(clientService.findClientsBySurname(surname1, pageable));
     }
 
@@ -129,8 +129,8 @@ public class ClientController {
     @PutMapping("/{id}")
     @Operation(summary = "Actualizar cliente")
     public ResponseEntity<ClientResponse> updateClient(
-            @PathVariable Long id,
-            @Valid @RequestBody ClientRequest request) {
+        @PathVariable Long id,
+        @Valid @RequestBody ClientRequest request) {
         return ResponseEntity.ok(clientService.updateClient(id, request));
     }
 

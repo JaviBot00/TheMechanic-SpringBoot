@@ -18,17 +18,17 @@ import jakarta.validation.constraints.*;
  * @param telephone  número de teléfono (opcional)
  */
 public record ClientRequest(
-        @NotNull(message = "El código de cliente es obligatorio") @Positive(message = "El código de cliente debe ser un número positivo") Integer clientCode,
+    @NotNull(message = "El código de cliente es obligatorio") @Positive(message = "El código de cliente debe ser un número positivo") Integer clientCode,
 
-        @NotBlank(message = "El nombre es obligatorio") @Size(max = 100, message = "El nombre no puede superar los 100 caracteres") String name,
+    @NotBlank(message = "El nombre es obligatorio") @Size(max = 100, message = "El nombre no puede superar los 100 caracteres") String name,
 
-        @NotBlank(message = "El primer apellido es obligatorio") @Size(max = 100, message = "El apellido no puede superar los 100 caracteres") String surname1,
+    @NotBlank(message = "El primer apellido es obligatorio") @Size(max = 100, message = "El apellido no puede superar los 100 caracteres") String surname1,
 
-        @Size(max = 100, message = "El apellido no puede superar los 100 caracteres") String surname2,
+    @Size(max = 100, message = "El apellido no puede superar los 100 caracteres") String surname2,
 
-        @NotBlank(message = "El NIF es obligatorio") @Pattern(regexp = "^[0-9]{8}[A-Z]$", message = "El NIF debe tener 8 dígitos seguidos de una letra mayúscula") String nif,
+    @NotBlank(message = "El NIF es obligatorio") @Pattern(regexp = "^[0-9]{8}[A-Z]$", message = "El NIF debe tener 8 dígitos seguidos de una letra mayúscula") String nif,
 
-        @NotBlank(message = "El email es obligatorio") @Email(message = "El formato del email no es válido") String email,
+    @NotBlank(message = "El email es obligatorio") @Email(message = "El formato del email no es válido") String email,
 
-        @Size(max = 20, message = "El teléfono no puede superar los 20 caracteres") String telephone) {
+    @Size(max = 20, message = "El teléfono no puede superar los 20 caracteres") String telephone) {
 }

@@ -18,10 +18,10 @@ package com.hotguy.workshopmanagement.auth.dto;
  * @param role         rol del usuario para que el frontend adapte la UI
  */
 public record AuthResponse(
-        String accessToken,
-        String refreshToken,
-        String tokenType,
-        String role) {
+    String accessToken,
+    String refreshToken,
+    String tokenType,
+    String role) {
     /**
      * Constructor de conveniencia que establece el tipo de token como "Bearer".
      */

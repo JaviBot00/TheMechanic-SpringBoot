@@ -28,14 +28,16 @@ public class VehicleService {
     private final ClientRepository clientRepository;
     private final VehicleMapper vehicleMapper;
 
-    /** Registra un vehículo y lo vincula al cliente propietario. */
+    /**
+     * Registra un vehículo y lo vincula al cliente propietario.
+     */
     @PreAuthorize("hasAnyRole('ADMIN','MECHANIC')")
     public VehicleResponse createVehicle(VehicleRequest request) {
         if (vehicleRepository.existsByRegistrationCode(request.registrationCode())) {
             throw new IllegalArgumentException("Ya existe un vehículo con la matrícula: " + request.registrationCode());
         }
         Client client = clientRepository.findById(request.clientId())
-                .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado: " + request.clientId()));
+            .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado: " + request.clientId()));
 
         Vehicle vehicle = vehicleMapper.toEntity(request);
         client.addVehicle(vehicle);
@@ -44,7 +46,7 @@ public class VehicleService {
 
     @Transactional(readOnly = true)
     @PreAuthorize("hasAnyRole('ADMIN','MECHANIC') or " +
-            "(hasRole('CLIENT') and @vehicleSecurityService.isOwner(authentication, #id))")
+        "(hasRole('CLIENT') and @vehicleSecurityService.isOwner(authentication, #id))")
     public VehicleResponse getVehicleById(Long id) {
         return vehicleMapper.toResponse(findVehicleOrThrow(id));
     }
@@ -71,13 +73,13 @@ public class VehicleService {
     public VehicleResponse updateVehicle(Long id, VehicleRequest request) {
         Vehicle vehicle = findVehicleOrThrow(id);
         if (!vehicle.getRegistrationCode().equals(request.registrationCode())
-                && vehicleRepository.existsByRegistrationCode(request.registrationCode())) {
+            && vehicleRepository.existsByRegistrationCode(request.registrationCode())) {
             throw new IllegalArgumentException("La matrícula ya está en uso: " + request.registrationCode());
         }
         // Cambiar propietario si ha cambiado el clientId
         if (!vehicle.getProprietary().getId().equals(request.clientId())) {
             Client newOwner = clientRepository.findById(request.clientId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado: " + request.clientId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado: " + request.clientId()));
             vehicle.getProprietary().removeVehicle(vehicle);
             newOwner.addVehicle(vehicle);
         }
@@ -91,7 +93,7 @@ public class VehicleService {
         long activeTasks = vehicle.getWorkshopTasks().stream().filter(t -> !t.isFinished()).count();
         if (activeTasks > 0) {
             throw new IllegalStateException(
-                    "No se puede eliminar: el vehículo tiene " + activeTasks + " tarea(s) activa(s)");
+                "No se puede eliminar: el vehículo tiene " + activeTasks + " tarea(s) activa(s)");
         }
         vehicle.softDelete();
         vehicleRepository.save(vehicle);
@@ -105,6 +107,6 @@ public class VehicleService {
 
     private Vehicle findVehicleOrThrow(Long id) {
         return vehicleRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Vehículo no encontrado: " + id));
+            .orElseThrow(() -> new ResourceNotFoundException("Vehículo no encontrado: " + id));
     }
 }

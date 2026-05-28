@@ -41,57 +41,57 @@ public class WorkshopTaskController {
     @GetMapping
     @Operation(summary = "Listar todas las tareas")
     public ResponseEntity<Page<WorkshopTaskResponse>> listTasks(
-            @PageableDefault(size = 20, sort = "initDate") Pageable pageable) {
+        @PageableDefault(size = 20, sort = "initDate") Pageable pageable) {
         return ResponseEntity.ok(taskService.listTasks(pageable));
     }
 
     @GetMapping("/by-client/{clientId}")
     @Operation(summary = "Listar tareas de un cliente")
     public ResponseEntity<Page<WorkshopTaskResponse>> listByClient(
-            @PathVariable Long clientId, @PageableDefault(size = 20) Pageable pageable) {
+        @PathVariable Long clientId, @PageableDefault(size = 20) Pageable pageable) {
         return ResponseEntity.ok(taskService.listByClient(clientId, pageable));
     }
 
     @GetMapping("/by-vehicle/{vehicleId}")
     @Operation(summary = "Listar tareas de un vehículo")
     public ResponseEntity<Page<WorkshopTaskResponse>> listByVehicle(
-            @PathVariable Long vehicleId, @PageableDefault(size = 20) Pageable pageable) {
+        @PathVariable Long vehicleId, @PageableDefault(size = 20) Pageable pageable) {
         return ResponseEntity.ok(taskService.listByVehicle(vehicleId, pageable));
     }
 
     @GetMapping("/by-mechanic/{mechanicId}")
     @Operation(summary = "Listar tareas de un mecánico")
     public ResponseEntity<Page<WorkshopTaskResponse>> listByMechanic(
-            @PathVariable Long mechanicId, @PageableDefault(size = 20) Pageable pageable) {
+        @PathVariable Long mechanicId, @PageableDefault(size = 20) Pageable pageable) {
         return ResponseEntity.ok(taskService.listByMechanic(mechanicId, pageable));
     }
 
     @GetMapping("/pending")
     @Operation(summary = "Listar tareas pendientes")
     public ResponseEntity<Page<WorkshopTaskResponse>> listPending(
-            @PageableDefault(size = 20) Pageable pageable) {
+        @PageableDefault(size = 20) Pageable pageable) {
         return ResponseEntity.ok(taskService.listPendingTasks(pageable));
     }
 
     @GetMapping("/unpaid")
     @Operation(summary = "Listar tareas finalizadas sin pagar")
     public ResponseEntity<Page<WorkshopTaskResponse>> listUnpaid(
-            @PageableDefault(size = 20) Pageable pageable) {
+        @PageableDefault(size = 20) Pageable pageable) {
         return ResponseEntity.ok(taskService.listUnpaidFinishedTasks(pageable));
     }
 
     @PatchMapping("/{id}/hours")
     @Operation(summary = "Añadir horas de trabajo a una tarea")
     public ResponseEntity<WorkshopTaskResponse> addHours(
-            @PathVariable Long id, @Valid @RequestBody AddHoursRequest request) {
+        @PathVariable Long id, @Valid @RequestBody AddHoursRequest request) {
         return ResponseEntity.ok(taskService.addHours(id, request.hours()));
     }
 
     @PatchMapping("/{id}/finish")
     @Operation(summary = "Marcar tarea como finalizada")
     public ResponseEntity<WorkshopTaskResponse> finishTask(
-            @PathVariable Long id,
-            @RequestParam(required = false) String solution) {
+        @PathVariable Long id,
+        @RequestParam(required = false) String solution) {
         return ResponseEntity.ok(taskService.finishTask(id, solution));
     }
 
@@ -104,7 +104,7 @@ public class WorkshopTaskController {
     @PutMapping("/{id}")
     @Operation(summary = "Actualizar datos de una tarea")
     public ResponseEntity<WorkshopTaskResponse> updateTask(
-            @PathVariable Long id, @Valid @RequestBody WorkshopTaskRequest request) {
+        @PathVariable Long id, @Valid @RequestBody WorkshopTaskRequest request) {
         return ResponseEntity.ok(taskService.updateTask(id, request));
     }
 

@@ -3,7 +3,9 @@ package com.hotguy.workshopmanagement.task.mapper;
 import com.hotguy.workshopmanagement.task.dto.WorkshopTaskRequest;
 import com.hotguy.workshopmanagement.task.dto.WorkshopTaskResponse;
 import com.hotguy.workshopmanagement.task.model.WorkshopTask;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
 /**
  * Mapper MapStruct para conversión entre {@link WorkshopTask} y sus DTOs.

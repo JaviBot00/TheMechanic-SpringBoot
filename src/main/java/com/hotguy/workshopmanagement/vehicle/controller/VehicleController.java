@@ -41,30 +41,30 @@ public class VehicleController {
     @GetMapping
     @Operation(summary = "Listar vehículos")
     public ResponseEntity<Page<VehicleResponse>> listVehicles(
-            @PageableDefault(size = 20, sort = "registrationCode") Pageable pageable) {
+        @PageableDefault(size = 20, sort = "registrationCode") Pageable pageable) {
         return ResponseEntity.ok(vehicleService.listVehicles(pageable));
     }
 
     @GetMapping("/by-client/{clientId}")
     @Operation(summary = "Listar vehículos de un cliente")
     public ResponseEntity<Page<VehicleResponse>> listByClient(
-            @PathVariable Long clientId,
-            @PageableDefault(size = 20) Pageable pageable) {
+        @PathVariable Long clientId,
+        @PageableDefault(size = 20) Pageable pageable) {
         return ResponseEntity.ok(vehicleService.listVehiclesByClient(clientId, pageable));
     }
 
     @GetMapping("/by-type")
     @Operation(summary = "Listar vehículos por tipo")
     public ResponseEntity<Page<VehicleResponse>> listByType(
-            @RequestParam VehicleType type,
-            @PageableDefault(size = 20) Pageable pageable) {
+        @RequestParam VehicleType type,
+        @PageableDefault(size = 20) Pageable pageable) {
         return ResponseEntity.ok(vehicleService.listVehiclesByType(type, pageable));
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Actualizar vehículo")
     public ResponseEntity<VehicleResponse> updateVehicle(
-            @PathVariable Long id, @Valid @RequestBody VehicleRequest request) {
+        @PathVariable Long id, @Valid @RequestBody VehicleRequest request) {
         return ResponseEntity.ok(vehicleService.updateVehicle(id, request));
     }
 

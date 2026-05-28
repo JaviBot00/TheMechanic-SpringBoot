@@ -22,7 +22,7 @@ import java.util.function.Function;
  *
  * <p>
  * Un JWT tiene tres partes separadas por puntos:
- * 
+ *
  * <pre>
  * header.payload.signature
  * eyJhbGci...  eyJzdWIi...  SflKxwRJ...
@@ -123,12 +123,12 @@ public class JwtService {
     private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long expiration) {
         long now = System.currentTimeMillis();
         return Jwts.builder()
-                .claims(extraClaims)
-                .subject(userDetails.getUsername())
-                .issuedAt(new Date(now))
-                .expiration(new Date(now + expiration))
-                .signWith(getSigningKey())
-                .compact();
+            .claims(extraClaims)
+            .subject(userDetails.getUsername())
+            .issuedAt(new Date(now))
+            .expiration(new Date(now + expiration))
+            .signWith(getSigningKey())
+            .compact();
     }
 
     /**
@@ -154,13 +154,15 @@ public class JwtService {
      */
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
-                .verifyWith(getSigningKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+            .verifyWith(getSigningKey())
+            .build()
+            .parseSignedClaims(token)
+            .getPayload();
     }
 
-    /** Extrae la fecha de expiración del token. */
+    /**
+     * Extrae la fecha de expiración del token.
+     */
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }

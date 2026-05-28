@@ -12,10 +12,10 @@ package com.hotguy.workshopmanagement.report.dto;
  * @param totalRevenue   facturación total acumulada (tareas pagadas)
  */
 public record SummaryReportResponse(
-        long totalClients,
-        long totalMechanics,
-        long totalVehicles,
-        long totalTasks,
-        long pendingTasks,
-        double totalRevenue) {
+    long totalClients,
+    long totalMechanics,
+    long totalVehicles,
+    long totalTasks,
+    long pendingTasks,
+    double totalRevenue) {
 }

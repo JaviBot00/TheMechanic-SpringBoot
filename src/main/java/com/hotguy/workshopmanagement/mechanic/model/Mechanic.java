@@ -4,6 +4,7 @@ import com.hotguy.workshopmanagement.auth.model.User;
 import com.hotguy.workshopmanagement.common.model.Person;
 import com.hotguy.workshopmanagement.task.model.WorkshopTask;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -41,7 +42,9 @@ public class Mechanic extends Person {
     @Column(name = "registration_date", nullable = false)
     private LocalDate registrationDate;
 
-    /** Especialidad principal del mecánico (ej. "Electricidad", "Chapa"). */
+    /**
+     * Especialidad principal del mecánico (ej. "Electricidad", "Chapa").
+     */
     @Column(name = "specialty", nullable = false, length = 100)
     private String specialty;
 
@@ -51,6 +54,7 @@ public class Mechanic extends Person {
      * se accede explícitamente a la lista. Mejora el rendimiento evitando
      * cargas innecesarias de datos.
      */
+    @Builder.Default
     @OneToMany(mappedBy = "mechanic", fetch = FetchType.LAZY)
     private List<WorkshopTask> workshopTasks = new ArrayList<>();
 

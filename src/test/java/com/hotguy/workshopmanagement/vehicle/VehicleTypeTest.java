@@ -6,7 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * Tests unitarios del enum {@link VehicleType} y su lógica de facturación.
@@ -53,13 +54,13 @@ class VehicleTypeTest {
      */
     @ParameterizedTest(name = "{0}: {1}h → {2}€")
     @CsvSource({
-            "MOTORCYCLE, 5,  100.0", // 5 × 20 + 0
-            "CAR,        4,  100.0", // 4 × 25 + 0
-            "VAN,        2,   90.0", // 2 × 30 + 30
-            "VAN,        0,   30.0", // 0 × 30 + 30 (solo tarifa fija)
-            "TRUCK,      2,  130.0", // 2 × 40 + 50
-            "TRUCK,      0,   50.0", // 0 × 40 + 50 (solo tarifa fija)
-            "MOTORCYCLE, 0,    0.0", // 0 × 20 + 0
+        "MOTORCYCLE, 5,  100.0", // 5 × 20 + 0
+        "CAR,        4,  100.0", // 4 × 25 + 0
+        "VAN,        2,   90.0", // 2 × 30 + 30
+        "VAN,        0,   30.0", // 0 × 30 + 30 (solo tarifa fija)
+        "TRUCK,      2,  130.0", // 2 × 40 + 50
+        "TRUCK,      0,   50.0", // 0 × 40 + 50 (solo tarifa fija)
+        "MOTORCYCLE, 0,    0.0", // 0 × 20 + 0
     })
     @DisplayName("Cálculo de precio parametrizado")
     void priceCalculation(String typeStr, float hours, float expectedPrice) {
@@ -71,6 +72,6 @@ class VehicleTypeTest {
     @DisplayName("Horas negativas deben lanzar IllegalArgumentException")
     void negativeHoursShouldThrow() {
         assertThatThrownBy(() -> VehicleType.CAR.calculatePrice(-1f))
-                .isInstanceOf(IllegalArgumentException.class);
+            .isInstanceOf(IllegalArgumentException.class);
     }
 }

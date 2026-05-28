@@ -2,7 +2,10 @@ package com.hotguy.workshopmanagement.auth.model;
 
 import com.hotguy.workshopmanagement.common.audit.AuditableEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.Instant;
@@ -21,7 +24,7 @@ import java.time.Instant;
  *
  * <p>
  * Flujo completo:
- * 
+ *
  * <pre>
  *   login → access token (1h) + refresh token (7 días) → guardado en BD
  *   access token expira → cliente envía refresh token → nuevo access token
@@ -59,6 +62,7 @@ public class RefreshToken extends AuditableEntity {
      * {@code true} si el token ha sido revocado (logout o token rotation).
      * Un token revocado no puede usarse aunque no haya expirado.
      */
+    @Builder.Default
     @Column(name = "revoked", nullable = false)
     private boolean revoked = false;
 
@@ -75,7 +79,7 @@ public class RefreshToken extends AuditableEntity {
      * Comprueba si el token sigue siendo válido (no expirado y no revocado).
      *
      * @return {@code true} si el token puede usarse para generar un nuevo access
-     *         token
+     * token
      */
     public boolean isValid() {
         return !revoked && Instant.now().isBefore(expiresAt);

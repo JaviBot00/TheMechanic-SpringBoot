@@ -27,12 +27,12 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @OpenAPIDefinition(info = @Info(title = "Workshop Management API", version = "1.0.0", description = "API REST para la gestión integral de un taller mecánico. "
-        +
-        "Incluye gestión de clientes, vehículos, mecánicos y órdenes de trabajo " +
-        "con autenticación JWT y control de acceso por roles.", contact = @Contact(name = "Workshop Management", email = "admin@workshopmanagement.com")), security = @SecurityRequirement(name = "Bearer Authentication"))
+    +
+    "Incluye gestión de clientes, vehículos, mecánicos y órdenes de trabajo " +
+    "con autenticación JWT y control de acceso por roles.", contact = @Contact(name = "Workshop Management", email = "admin@workshopmanagement.com")), security = @SecurityRequirement(name = "Bearer Authentication"))
 @SecurityScheme(name = "Bearer Authentication", type = SecuritySchemeType.HTTP, scheme = "bearer", bearerFormat = "JWT", description = "Introduce el token JWT obtenido en /api/v1/auth/login. "
-        +
-        "Formato: Bearer {token}")
+    +
+    "Formato: Bearer {token}")
 public class OpenApiConfig {
     // La configuración se hace completamente mediante anotaciones.
     // No se necesita código adicional en el cuerpo de la clase.

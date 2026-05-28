@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  * que lea todas las propiedades que empiecen por {@code security.jwt} y las
  * mapee
  * automáticamente a los campos de esta clase. Por ejemplo:
- * 
+ *
  * <pre>
  * security:
  *   jwt:

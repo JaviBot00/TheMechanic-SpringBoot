@@ -269,6 +269,19 @@
             <scope>test</scope>
         </dependency>
 
+        <!--
+            spring-boot-starter-webmvc-test
+            Starter de test modular de Spring Boot 4 para MockMVC.
+            Necesario para usar @AutoConfigureMockMvc y demás utilidades
+            de test del módulo WebMVC. En Spring Boot 4, la auto-configuración
+            se dividió en módulos específicos por tecnología.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <!-- ============================================================
@@ -329,7 +342,7 @@
                             Indica a MapStruct que use Spring para inyectar
                             los mappers como beans (@Autowired / @Component)
                         -->
-                        <arg>-Amapstruct.defaultComponentModel=spring</arg>
+                        <compilerArg>-Amapstruct.defaultComponentModel=spring</compilerArg>
                     </compilerArgs>
                 </configuration>
             </plugin>

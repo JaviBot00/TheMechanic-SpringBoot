@@ -23,98 +23,98 @@
 
 spring:
 
-  # ---------------------------------------------------------------------------
-  # BASE DE DATOS POSTGRESQL
-  # Los valores reales vienen de variables de entorno en docker-compose.yml
-  # ---------------------------------------------------------------------------
-  datasource:
-    # Formato: jdbc:postgresql://host:puerto/nombre_bd
-    # Variable de entorno: SPRING_DATASOURCE_URL
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/workshopdb}
-    username: ${SPRING_DATASOURCE_USERNAME:workshop_user}
-    password: ${SPRING_DATASOURCE_PASSWORD:changeme}
-    driver-class-name: org.postgresql.Driver
+    # ---------------------------------------------------------------------------
+    # BASE DE DATOS POSTGRESQL
+    # Los valores reales vienen de variables de entorno en docker-compose.yml
+    # ---------------------------------------------------------------------------
+    datasource:
+        # Formato: jdbc:postgresql://host:puerto/nombre_bd
+        # Variable de entorno: SPRING_DATASOURCE_URL
+        url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/workshopdb}
+        username: ${SPRING_DATASOURCE_USERNAME:workshop_user}
+        password: ${SPRING_DATASOURCE_PASSWORD:changeme}
+        driver-class-name: org.postgresql.Driver
 
-    # HikariCP: pool de conexiones de Spring Boot (incluido automáticamente).
-    # Gestiona un conjunto de conexiones reutilizables para mejor rendimiento.
-    hikari:
-      # Máximo de conexiones simultáneas al pool.
-      maximum-pool-size: 10
-      # Tiempo mínimo de conexiones disponibles en el pool.
-      minimum-idle: 5
-      # Tiempo máximo (ms) que el pool espera por una conexión libre: 30s.
-      connection-timeout: 30000
-      # Tiempo máximo (ms) que una conexión puede estar inactiva: 10min.
-      idle-timeout: 600000
-      # Tiempo máximo (ms) de vida de una conexión: 30min.
-      max-lifetime: 1800000
+        # HikariCP: pool de conexiones de Spring Boot (incluido automáticamente).
+        # Gestiona un conjunto de conexiones reutilizables para mejor rendimiento.
+        hikari:
+            # Máximo de conexiones simultáneas al pool.
+            maximum-pool-size: 10
+            # Tiempo mínimo de conexiones disponibles en el pool.
+            minimum-idle: 5
+            # Tiempo máximo (ms) que el pool espera por una conexión libre: 30s.
+            connection-timeout: 30000
+            # Tiempo máximo (ms) que una conexión puede estar inactiva: 10min.
+            idle-timeout: 600000
+            # Tiempo máximo (ms) de vida de una conexión: 30min.
+            max-lifetime: 1800000
 
-  # ---------------------------------------------------------------------------
-  # FLYWAY EN PRODUCCIÓN
-  # Solo scripts de esquema. Sin datos de prueba.
-  # ---------------------------------------------------------------------------
-  flyway:
-    locations:
-      - classpath:db/migration
-    # En producción NUNCA limpiar la BD.
-    clean-disabled: true
+    # ---------------------------------------------------------------------------
+    # FLYWAY EN PRODUCCIÓN
+    # Solo scripts de esquema. Sin datos de prueba.
+    # ---------------------------------------------------------------------------
+    flyway:
+        locations:
+            - classpath:db/migration
+        # En producción NUNCA limpiar la BD.
+        clean-disabled: true
 
-  # ---------------------------------------------------------------------------
-  # JPA EN PRODUCCIÓN
-  # Sin logs SQL para evitar exponer datos sensibles y mejorar rendimiento.
-  # ---------------------------------------------------------------------------
-  jpa:
-    show-sql: false
-    properties:
-      hibernate:
-        format_sql: false
+    # ---------------------------------------------------------------------------
+    # JPA EN PRODUCCIÓN
+    # Sin logs SQL para evitar exponer datos sensibles y mejorar rendimiento.
+    # ---------------------------------------------------------------------------
+    jpa:
+        show-sql: false
+        properties:
+            hibernate:
+                format_sql: false
 
 # =============================================================================
 # SERVIDOR EN PRODUCCIÓN
 # =============================================================================
 server:
-  port: ${SERVER_PORT:8080}
-  # Compresión de respuestas HTTP para reducir ancho de banda.
-  compression:
-    enabled: true
-    mime-types: application/json,application/xml,text/html,text/plain
-    min-response-size: 1024
+    port: ${SERVER_PORT:8080}
+    # Compresión de respuestas HTTP para reducir ancho de banda.
+    compression:
+        enabled: true
+        mime-types: application/json,application/xml,text/html,text/plain
+        min-response-size: 1024
 
 # =============================================================================
 # SEGURIDAD JWT EN PRODUCCIÓN
 # La clave secreta DEBE venir de variable de entorno, nunca hardcodeada.
 # =============================================================================
 security:
-  jwt:
-    secret-key: ${SECURITY_JWT_SECRET_KEY}
-    access-token-expiration: ${SECURITY_JWT_ACCESS_TOKEN_EXPIRATION:3600000}
-    refresh-token-expiration: ${SECURITY_JWT_REFRESH_TOKEN_EXPIRATION:604800000}
+    jwt:
+        secret-key: ${SECURITY_JWT_SECRET_KEY}
+        access-token-expiration: ${SECURITY_JWT_ACCESS_TOKEN_EXPIRATION:3600000}
+        refresh-token-expiration: ${SECURITY_JWT_REFRESH_TOKEN_EXPIRATION:604800000}
 
 # =============================================================================
 # LOGGING EN PRODUCCIÓN
 # Solo errores y warnings para no llenar los logs de ruido.
 # =============================================================================
 logging:
-  level:
-    root: WARN
-    com.hotguy.workshopmanagement: INFO
-  file:
-    # En producción los logs van a fichero, no solo a consola.
-    # Docker captura stdout/stderr del contenedor igualmente.
-    name: /var/log/workshop-management/application.log
+    level:
+        root: WARN
+        com.hotguy.workshopmanagement: INFO
+    file:
+        # En producción los logs van a fichero, no solo a consola.
+        # Docker captura stdout/stderr del contenedor igualmente.
+        name: /var/log/workshop-management/application.log
 
 # =============================================================================
 # ACTUATOR EN PRODUCCIÓN
 # Solo health e info expuestos públicamente. El resto requiere autenticación.
 # =============================================================================
 management:
-  endpoints:
-    web:
-      exposure:
-        include: health, info
-  endpoint:
-    health:
-      show-details: when-authorized
+    endpoints:
+        web:
+            exposure:
+                include: health, info
+    endpoint:
+        health:
+            show-details: when-authorized
 
 # =============================================================================
 # SPRINGDOC EN PRODUCCIÓN
@@ -122,7 +122,7 @@ management:
 # Si necesitas documentación en prod, protégela con autenticación.
 # =============================================================================
 springdoc:
-  swagger-ui:
-    enabled: false
-  api-docs:
-    enabled: false
+    swagger-ui:
+        enabled: false
+    api-docs:
+        enabled: false

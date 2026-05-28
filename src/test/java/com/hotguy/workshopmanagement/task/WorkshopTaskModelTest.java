@@ -11,7 +11,8 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * Tests unitarios del modelo {@link WorkshopTask}.
@@ -30,25 +31,25 @@ class WorkshopTaskModelTest {
     @BeforeEach
     void setUp() {
         client = Client.builder()
-                .id(1L).name("Test").surname1("Client").nif("12345678A")
-                .email("test@test.com").clientCode(1).build();
+            .id(1L).name("Test").surname1("Client").nif("12345678A")
+            .email("test@test.com").clientCode(1).build();
 
         car = Vehicle.builder()
-                .id(1L).registrationCode("TEST-001").model("Toyota").type(VehicleType.CAR)
-                .proprietary(client).build();
+            .id(1L).registrationCode("TEST-001").model("Toyota").type(VehicleType.CAR)
+            .proprietary(client).build();
 
         van = Vehicle.builder()
-                .id(2L).registrationCode("TEST-002").model("Mercedes").type(VehicleType.VAN)
-                .proprietary(client).build();
+            .id(2L).registrationCode("TEST-002").model("Mercedes").type(VehicleType.VAN)
+            .proprietary(client).build();
 
         mechanic = Mechanic.builder()
-                .id(1L).name("Test").surname1("Mechanic").nif("87654321B")
-                .email("mec@test.com").specialty("General").registrationDate(LocalDate.now()).build();
+            .id(1L).name("Test").surname1("Mechanic").nif("87654321B")
+            .email("mec@test.com").specialty("General").registrationDate(LocalDate.now()).build();
 
         task = WorkshopTask.builder()
-                .id(1L).diagnostic("Test diagnosis").previewHours(4f)
-                .initDate(LocalDate.now()).client(client).vehicle(car).mechanic(mechanic)
-                .realHours(0f).finished(false).paid(false).build();
+            .id(1L).diagnostic("Test diagnosis").previewHours(4f)
+            .initDate(LocalDate.now()).client(client).vehicle(car).mechanic(mechanic)
+            .realHours(0f).finished(false).paid(false).build();
     }
 
     // ── Estado inicial ────────────────────────────────────────────────────────
@@ -90,21 +91,21 @@ class WorkshopTaskModelTest {
     void addingHoursToFinishedTaskShouldThrow() {
         task.finish();
         assertThatThrownBy(() -> task.addHours(1f))
-                .isInstanceOf(IllegalStateException.class);
+            .isInstanceOf(IllegalStateException.class);
     }
 
     @Test
     @DisplayName("Añadir horas negativas debe lanzar IllegalArgumentException")
     void addingNegativeHoursShouldThrow() {
         assertThatThrownBy(() -> task.addHours(-1f))
-                .isInstanceOf(IllegalArgumentException.class);
+            .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("Añadir cero horas debe lanzar IllegalArgumentException")
     void addingZeroHoursShouldThrow() {
         assertThatThrownBy(() -> task.addHours(0f))
-                .isInstanceOf(IllegalArgumentException.class);
+            .isInstanceOf(IllegalArgumentException.class);
     }
 
     // ── Progreso ─────────────────────────────────────────────────────────────
@@ -159,9 +160,9 @@ class WorkshopTaskModelTest {
     @DisplayName("Coste de furgoneta: 30€/hora + 30€ fijo")
     void vanTotalCostShouldIncludeFixedFee() {
         WorkshopTask vanTask = WorkshopTask.builder()
-                .diagnostic("Van task").previewHours(3f)
-                .initDate(LocalDate.now()).client(client).vehicle(van).mechanic(mechanic)
-                .realHours(0f).finished(false).paid(false).build();
+            .diagnostic("Van task").previewHours(3f)
+            .initDate(LocalDate.now()).client(client).vehicle(van).mechanic(mechanic)
+            .realHours(0f).finished(false).paid(false).build();
 
         vanTask.addHours(3f);
         vanTask.finish();
@@ -186,7 +187,7 @@ class WorkshopTaskModelTest {
     @DisplayName("Marcar como pagada una tarea no finalizada debe lanzar excepción")
     void markingUnfinishedTaskAsPaidShouldThrow() {
         assertThatThrownBy(() -> task.markAsPaid())
-                .isInstanceOf(IllegalStateException.class);
+            .isInstanceOf(IllegalStateException.class);
     }
 
     @Test

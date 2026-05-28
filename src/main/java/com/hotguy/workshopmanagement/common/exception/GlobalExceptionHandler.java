@@ -29,7 +29,7 @@ import java.util.Map;
  * 3+
  * para respuestas de error en APIs REST. Devuelve JSON con estructura
  * estandarizada:
- * 
+ *
  * <pre>
  * {
  *   "type": "https://workshopmanagement.com/errors/not-found",
@@ -94,8 +94,8 @@ public class GlobalExceptionHandler {
             fieldErrors.put(error.getField(), error.getDefaultMessage());
         }
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(
-                HttpStatus.BAD_REQUEST,
-                "Los datos enviados no son válidos");
+            HttpStatus.BAD_REQUEST,
+            "Los datos enviados no son válidos");
         problem.setTitle("Error de validación");
         problem.setType(URI.create("https://workshopmanagement.com/errors/validation"));
         problem.setProperty("timestamp", Instant.now());
@@ -109,8 +109,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     public ProblemDetail handleAuthenticationException(AuthenticationException ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(
-                HttpStatus.UNAUTHORIZED,
-                "Credenciales incorrectas o token inválido");
+            HttpStatus.UNAUTHORIZED,
+            "Credenciales incorrectas o token inválido");
         problem.setTitle("No autenticado");
         problem.setType(URI.create("https://workshopmanagement.com/errors/unauthorized"));
         problem.setProperty("timestamp", Instant.now());
@@ -124,8 +124,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ProblemDetail handleAccessDenied(AccessDeniedException ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(
-                HttpStatus.FORBIDDEN,
-                "No tiene permisos para realizar esta operación");
+            HttpStatus.FORBIDDEN,
+            "No tiene permisos para realizar esta operación");
         problem.setTitle("Acceso denegado");
         problem.setType(URI.create("https://workshopmanagement.com/errors/forbidden"));
         problem.setProperty("timestamp", Instant.now());
@@ -139,8 +139,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleGenericException(Exception ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(
-                HttpStatus.INTERNAL_SERVER_ERROR,
-                "Se ha producido un error interno. Contacte con el administrador.");
+            HttpStatus.INTERNAL_SERVER_ERROR,
+            "Se ha producido un error interno. Contacte con el administrador.");
         problem.setTitle("Error interno del servidor");
         problem.setType(URI.create("https://workshopmanagement.com/errors/internal"));
         problem.setProperty("timestamp", Instant.now());

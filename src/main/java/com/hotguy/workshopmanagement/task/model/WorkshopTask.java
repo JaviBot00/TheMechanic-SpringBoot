@@ -50,7 +50,9 @@ public class WorkshopTask extends AuditableEntity {
     @Column(name = "solution", length = 500)
     private String solution;
 
-    /** Horas estimadas para completar la tarea (presupuesto). */
+    /**
+     * Horas estimadas para completar la tarea (presupuesto).
+     */
     @Column(name = "preview_hours", nullable = false)
     private float previewHours;
 
@@ -61,7 +63,9 @@ public class WorkshopTask extends AuditableEntity {
     @Column(name = "real_hours", nullable = false)
     private float realHours;
 
-    /** {@code true} cuando la tarea ha sido marcada como completada. */
+    /**
+     * {@code true} cuando la tarea ha sido marcada como completada.
+     */
     @Column(name = "is_finished", nullable = false)
     private boolean finished;
 
@@ -72,11 +76,15 @@ public class WorkshopTask extends AuditableEntity {
     @Column(name = "is_paid", nullable = false)
     private boolean paid;
 
-    /** Fecha de inicio de la tarea. */
+    /**
+     * Fecha de inicio de la tarea.
+     */
     @Column(name = "init_date", nullable = false)
     private LocalDate initDate;
 
-    /** Notas adicionales del mecánico sobre la tarea. */
+    /**
+     * Notas adicionales del mecánico sobre la tarea.
+     */
     @Column(name = "notes", length = 500)
     private String notes;
 

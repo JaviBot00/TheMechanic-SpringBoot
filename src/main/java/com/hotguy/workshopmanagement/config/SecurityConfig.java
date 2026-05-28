@@ -56,67 +56,70 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                // Desactivar CSRF (Cross-Site Request Forgery).
-                // CSRF es necesario para apps web con sesiones y cookies.
-                // En APIs REST con JWT no es necesario porque no usamos cookies de sesión.
-                .csrf(AbstractHttpConfigurer::disable)
+            // Desactivar CSRF (Cross-Site Request Forgery).
+            // CSRF es necesario para apps web con sesiones y cookies.
+            // En APIs REST con JWT no es necesario porque no usamos cookies de sesión.
+            .csrf(AbstractHttpConfigurer::disable)
 
-                // Configurar las reglas de autorización por URL
-                .authorizeHttpRequests(auth -> auth
+            // Configurar las reglas de autorización por URL
+            .authorizeHttpRequests(auth -> auth
 
-                        // Endpoints públicos: no requieren token JWT
-                        .requestMatchers(
-                                "/api/v1/auth/login",
-                                "/api/v1/auth/refresh")
-                        .permitAll()
+                // Endpoints públicos: no requieren token JWT
+                .requestMatchers(
+                    "/api/v1/auth/login",
+                    "/api/v1/auth/refresh")
+                .permitAll()
 
-                        // Consola H2 (solo dev, pero la incluimos aquí para no complicar perfiles)
-                        .requestMatchers("/h2-console/**").permitAll()
+                // Consola H2 (solo dev, pero la incluimos aquí para no complicar
+                // perfiles)
+                .requestMatchers("/h2-console/**").permitAll()
 
-                        // Swagger UI y documentación OpenAPI
-                        .requestMatchers(
-                                "/swagger-ui.html",
-                                "/swagger-ui/**",
-                                "/api-docs",
-                                "/api-docs/**")
-                        .permitAll()
+                // Swagger UI y documentación OpenAPI
+                .requestMatchers(
+                    "/swagger-ui.html",
+                    "/swagger-ui/**",
+                    "/api-docs",
+                    "/api-docs/**")
+                .permitAll()
 
-                        // Actuator health e info (monitorización sin autenticación)
-                        .requestMatchers("/actuator/health", "/actuator/info").permitAll()
+                // Actuator health e info (monitorización sin autenticación)
+                .requestMatchers("/actuator/health", "/actuator/info").permitAll()
 
-                        // Gestión de usuarios: solo ADMIN
-                        .requestMatchers("/api/v1/auth/register").hasRole("ADMIN")
+                // Gestión de usuarios: solo ADMIN
+                .requestMatchers("/api/v1/auth/register").hasRole("ADMIN")
 
-                        // Reportes: ADMIN y MECHANIC
-                        .requestMatchers("/api/v1/reports/**").hasAnyRole("ADMIN", "MECHANIC")
+                // Reportes: ADMIN y MECHANIC
+                .requestMatchers("/api/v1/reports/**").hasAnyRole("ADMIN", "MECHANIC")
 
-                        // Marcar pago: solo ADMIN
-                        .requestMatchers(HttpMethod.PATCH, "/api/v1/tasks/*/pay").hasRole("ADMIN")
+                // Marcar pago: solo ADMIN
+                .requestMatchers(HttpMethod.PATCH, "/api/v1/tasks/*/pay")
+                .hasRole("ADMIN")
 
-                        // El resto de endpoints autenticados se controlan con @PreAuthorize en los
-                        // controllers
-                        .anyRequest().authenticated())
+                // El resto de endpoints autenticados se controlan con @PreAuthorize en
+                // los controllers
+                .anyRequest().authenticated())
 
-                // Política de sesiones: STATELESS.
-                // Spring Security NO crea ni usa sesiones HTTP (HttpSession).
-                // Cada petición se autentica de nuevo con el JWT.
-                // Esto es fundamental para APIs REST escalables.
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            // Política de sesiones: STATELESS.
+            // Spring Security NO crea ni usa sesiones HTTP (HttpSession).
+            // Cada petición se autentica de nuevo con el JWT.
+            // Esto es fundamental para APIs REST escalables.
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                // Registrar nuestro AuthenticationProvider (con BCrypt + UserDetailsService)
-                .authenticationProvider(authenticationProvider())
+            // Registrar nuestro AuthenticationProvider (con BCrypt + UserDetailsService)
+            .authenticationProvider(authenticationProvider())
 
-                // Insertar nuestro filtro JWT ANTES del filtro estándar de username/password.
-                // El orden importa: nuestro filtro debe ejecutarse primero para establecer
-                // la autenticación en el SecurityContext antes de que Spring Security la
-                // compruebe.
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+            // Insertar nuestro filtro JWT ANTES del filtro estándar de username/password.
+            // El orden importa: nuestro filtro debe ejecutarse primero para establecer
+            // la autenticación en el SecurityContext antes de que Spring Security la
+            // compruebe.
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
 
-                // Configurar las cabeceras HTTP para permitir la consola H2 en un iframe (solo
-                // dev)
-                .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
+            // Configurar las cabeceras HTTP para permitir la consola H2 en un iframe (solo
+            // dev)
+            .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
 
-                .build();
+            .build();
     }
 
     /**
@@ -135,8 +138,8 @@ public class SecurityConfig {
      */
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
+        // provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
@@ -154,7 +157,7 @@ public class SecurityConfig {
      */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
-            throws Exception {
+        throws Exception {
         return config.getAuthenticationManager();
     }
 

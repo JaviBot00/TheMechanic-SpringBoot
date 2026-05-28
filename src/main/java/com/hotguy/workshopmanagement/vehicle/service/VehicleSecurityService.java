@@ -24,7 +24,7 @@ public class VehicleSecurityService {
         Object principal = authentication.getPrincipal();
         if (principal instanceof User user && user.getClient() != null) {
             return user.getClient().getVehicles().stream()
-                    .anyMatch(v -> v.getId().equals(vehicleId));
+                .anyMatch(v -> v.getId().equals(vehicleId));
         }
         return false;
     }

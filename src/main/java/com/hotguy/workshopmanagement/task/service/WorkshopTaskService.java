@@ -31,13 +31,15 @@ public class WorkshopTaskService {
     private final MechanicRepository mechanicRepository;
     private final WorkshopTaskMapper taskMapper;
 
-    /** Crea una nueva orden de trabajo. */
+    /**
+     * Crea una nueva orden de trabajo.
+     */
     @PreAuthorize("hasAnyRole('ADMIN','MECHANIC')")
     public WorkshopTaskResponse createTask(WorkshopTaskRequest request) {
         Vehicle vehicle = vehicleRepository.findById(request.vehicleId())
-                .orElseThrow(() -> new ResourceNotFoundException("Vehículo no encontrado: " + request.vehicleId()));
+            .orElseThrow(() -> new ResourceNotFoundException("Vehículo no encontrado: " + request.vehicleId()));
         Mechanic mechanic = mechanicRepository.findById(request.mechanicId())
-                .orElseThrow(() -> new ResourceNotFoundException("Mecánico no encontrado: " + request.mechanicId()));
+            .orElseThrow(() -> new ResourceNotFoundException("Mecánico no encontrado: " + request.mechanicId()));
         Client client = vehicle.getProprietary();
 
         WorkshopTask task = taskMapper.toEntity(request);
@@ -93,7 +95,9 @@ public class WorkshopTaskService {
         return taskRepository.findByFinishedTrueAndPaidFalse(pageable).map(taskMapper::toResponse);
     }
 
-    /** Añade horas trabajadas a una tarea. */
+    /**
+     * Añade horas trabajadas a una tarea.
+     */
     @PreAuthorize("hasAnyRole('ADMIN','MECHANIC')")
     public WorkshopTaskResponse addHours(Long id, float hours) {
         WorkshopTask task = findTaskOrThrow(id);
@@ -101,7 +105,9 @@ public class WorkshopTaskService {
         return taskMapper.toResponse(taskRepository.save(task));
     }
 
-    /** Actualiza diagnóstico y/o solución de la tarea. */
+    /**
+     * Actualiza diagnóstico y/o solución de la tarea.
+     */
     @PreAuthorize("hasAnyRole('ADMIN','MECHANIC')")
     public WorkshopTaskResponse updateTask(Long id, WorkshopTaskRequest request) {
         WorkshopTask task = findTaskOrThrow(id);
@@ -117,7 +123,9 @@ public class WorkshopTaskService {
         return taskMapper.toResponse(taskRepository.save(task));
     }
 
-    /** Marca la tarea como finalizada. */
+    /**
+     * Marca la tarea como finalizada.
+     */
     @PreAuthorize("hasAnyRole('ADMIN','MECHANIC')")
     public WorkshopTaskResponse finishTask(Long id, String solution) {
         WorkshopTask task = findTaskOrThrow(id);
@@ -128,7 +136,9 @@ public class WorkshopTaskService {
         return taskMapper.toResponse(taskRepository.save(task));
     }
 
-    /** Marca la tarea como pagada. Solo ADMIN. */
+    /**
+     * Marca la tarea como pagada. Solo ADMIN.
+     */
     @PreAuthorize("hasRole('ADMIN')")
     public WorkshopTaskResponse markAsPaid(Long id) {
         WorkshopTask task = findTaskOrThrow(id);
@@ -136,7 +146,9 @@ public class WorkshopTaskService {
         return taskMapper.toResponse(taskRepository.save(task));
     }
 
-    /** Elimina una tarea. Solo si no está pagada. */
+    /**
+     * Elimina una tarea. Solo si no está pagada.
+     */
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteTask(Long id) {
         WorkshopTask task = findTaskOrThrow(id);
@@ -148,6 +160,6 @@ public class WorkshopTaskService {
 
     private WorkshopTask findTaskOrThrow(Long id) {
         return taskRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Tarea no encontrada: " + id));
+            .orElseThrow(() -> new ResourceNotFoundException("Tarea no encontrada: " + id));
     }
 }
