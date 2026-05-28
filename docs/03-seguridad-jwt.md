@@ -8,9 +8,9 @@ Todo el sistema de autenticación y autorización: el filtro JWT, la configuraci
 
 ## Ficheros entregados
 
-```
+```cmd
 fasciculo-3/
-└── src/main/java/com/workshopmanagement/
+└── src/main/java/com/hotguy/workshopmanagement/
     ├── config/
     │   ├── JwtProperties.java          ← Lee propiedades JWT del YAML
     │   └── SecurityConfig.java         ← Configuración central de seguridad
@@ -42,7 +42,7 @@ fasciculo-3/
 
 JWT (JSON Web Token) es un estándar para transmitir información de forma segura entre dos partes. Un JWT tiene tres partes separadas por puntos:
 
-```
+```cmd
 eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJST0xFX0FETUlOIn0.xK9z...
       HEADER                          PAYLOAD                        SIGNATURE
 ```
@@ -67,7 +67,7 @@ La clave de seguridad es la **firma**: si alguien modifica el payload, la firma 
 
 ## Flujo completo de autenticación
 
-```
+```cmd
 ┌─────────┐                              ┌─────────┐          ┌────────┐
 │ Cliente │                              │   API   │          │   BD   │
 └────┬────┘                              └────┬────┘          └───┬────┘
@@ -112,7 +112,7 @@ La clave de seguridad es la **firma**: si alguien modifica el payload, la firma 
 
 Spring Security es una cadena de filtros que intercepta cada petición HTTP antes de que llegue al Controller. El orden importa:
 
-```
+```cmd
 Petición HTTP
     │
     ▼
@@ -185,7 +185,7 @@ Nunca se almacena la contraseña en texto plano. BCrypt aplica:
 2. **Factor de coste** (por defecto 10): hace el algoritmo lento adrede para dificultar ataques de fuerza bruta
 3. **Irreversible**: no se puede recuperar la contraseña original del hash
 
-```
+```cmd
 "password123"  →  BCrypt  →  "$2a$10$N9qo8uLOick..."
 "password123"  →  BCrypt  →  "$2a$10$Kx7pL3mRick..."  (distinto, mismo input)
 ```
@@ -213,7 +213,7 @@ Sin este handler, una excepción no capturada devolvería un error 500 genérico
 ### Mapa de excepciones a HTTP
 
 | Excepción | Código HTTP | Cuándo ocurre |
-|-----------|-------------|----------------|
+|---|---|---|
 | `ResourceNotFoundException` | 404 | Entidad no encontrada por ID |
 | `IllegalArgumentException` | 400 | Datos incorrectos (username duplicado...) |
 | `IllegalStateException` | 409 | Operación no permitida en el estado actual |
@@ -233,6 +233,7 @@ public record LoginRequest(String username, String password) {}
 ```
 
 Equivale a una clase con:
+
 - Constructor con todos los campos
 - Getters (método con el nombre del campo, sin `get`)
 - `equals()`, `hashCode()`, `toString()` generados

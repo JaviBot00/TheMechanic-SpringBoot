@@ -62,7 +62,7 @@ Workshop Management API es el backend de un sistema de gestión para talleres me
 
 El proyecto sigue una **arquitectura por feature** (también llamada Vertical Slice), donde cada funcionalidad de negocio agrupa todas sus capas:
 
-```
+```cmd
 com.hotguy.workshopmanagement/
 ├── auth/           → Autenticación JWT (login, refresh, logout)
 ├── client/         → Gestión de clientes
@@ -75,6 +75,7 @@ com.hotguy.workshopmanagement/
 ```
 
 Cada feature contiene:
+
 - `model/` — Entidad JPA
 - `repository/` — Interfaz Spring Data (acceso a BD)
 - `service/` — Lógica de negocio
@@ -135,7 +136,7 @@ docker-compose logs -f api
 ## 🌍 Perfiles de entorno
 
 | Perfil | BD | Activación | Swagger | Datos de prueba |
-|--------|----|-----------| --------|----------------|
+|---|---|---|---|---|
 | `dev` | H2 en memoria | IntelliJ / `-Dspring.profiles.active=dev` | ✅ Activo | ✅ Cargados |
 | `prod` | PostgreSQL | Variable de entorno `SPRING_PROFILES_ACTIVE=prod` | ❌ Desactivado | ❌ Solo esquema |
 
@@ -152,14 +153,15 @@ Con el perfil `dev` activo, la documentación interactiva está disponible en:
 
 La API usa **JWT Bearer Token**. Flujo de autenticación:
 
-```
+```cmd
 POST /api/v1/auth/login          → Obtiene access token + refresh token
 POST /api/v1/auth/refresh        → Renueva el access token
 POST /api/v1/auth/logout         → Invalida el refresh token
 ```
 
 Para usar un endpoint protegido, incluir el header:
-```
+
+```cmd
 Authorization: Bearer <access_token>
 ```
 
@@ -182,11 +184,11 @@ open target/site/jacoco/index.html
 
 ## 📁 Estructura del proyecto
 
-```
+```cmd
 workshop-management-api/
 ├── src/
 │   ├── main/
-│   │   ├── java/com/workshopmanagement/
+│   │   ├── java/com/hotguy/workshopmanagement/
 │   │   │   ├── WorkshopManagementApplication.java
 │   │   │   ├── auth/
 │   │   │   ├── client/
@@ -204,7 +206,7 @@ workshop-management-api/
 │   │           ├── migration/      ← Scripts Flyway (esquema)
 │   │           └── seed/           ← Datos de prueba (solo dev)
 │   └── test/
-│       └── java/com/workshopmanagement/
+│       └── java/com/hotguy/workshopmanagement/
 ├── docs/                           ← Documentación técnica
 │   ├── 00-arquitectura-general.md
 │   ├── 01-base-proyecto.md
@@ -223,7 +225,7 @@ workshop-management-api/
 La documentación técnica detallada se encuentra en la carpeta [`docs/`](./docs/):
 
 | Documento | Descripción |
-|-----------|-------------|
+|---|---|
 | [00 - Arquitectura general](./docs/00-arquitectura-general.md) | Visión global del sistema y decisiones de diseño |
 | [01 - Base del proyecto](./docs/01-base-proyecto.md) | pom.xml, perfiles, configuración |
 | [02 - Modelo de datos](./docs/02-modelo-datos.md) | Entidades JPA y migraciones Flyway |
@@ -235,10 +237,3 @@ La documentación técnica detallada se encuentra en la carpeta [`docs/`](./docs
 | [08 - Reportes](./docs/08-reportes.md) | API de informes y estadísticas |
 | [09 - Tests](./docs/09-tests.md) | Estrategia de testing |
 | [10 - Docker y despliegue](./docs/10-docker-despliegue.md) | Contenedorización y puesta en producción |
-
----
-
-## 📄 Licencia
-
-Este proyecto es de uso privado y educativo.
-```

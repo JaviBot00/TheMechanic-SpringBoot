@@ -10,7 +10,7 @@ Piénsalo como los cimientos de un edificio: si están bien hechos, todo lo que 
 
 ## Ficheros entregados
 
-```
+```cmd
 fasciculo-1/
 ├── pom.xml
 ├── README.md
@@ -18,7 +18,7 @@ fasciculo-1/
 ├── .env.example
 └── src/
     └── main/
-        ├── java/com/workshopmanagement/
+        ├── java/com/hotguy/workshopmanagement/
         │   └── WorkshopManagementApplication.java
         └── resources/
             ├── application.yml
@@ -35,6 +35,7 @@ fasciculo-1/
 Spring Boot es un framework Java que te permite crear aplicaciones web listas para producción con muy poca configuración manual. La idea central es **convención sobre configuración**: si sigues las convenciones del framework, él configura automáticamente todo lo que necesitas (servidor web, conexión a BD, seguridad, etc.).
 
 El flujo básico es:
+
 1. Defines tus dependencias en `pom.xml`
 2. Spring Boot detecta qué tienes en el classpath y se auto-configura
 3. Tú solo escribes la lógica de negocio
@@ -42,6 +43,7 @@ El flujo básico es:
 ### ¿Qué es Maven?
 
 Maven es la herramienta que gestiona:
+
 - **Dependencias**: descarga automáticamente las librerías que necesitas desde Maven Central (el repositorio público de librerías Java)
 - **Build**: compila el código, ejecuta los tests, y empaqueta la aplicación en un `.jar`
 - **Plugins**: ejecuta tareas adicionales como generar reportes de cobertura
@@ -77,7 +79,7 @@ El patrón `spring-boot-starter-*` indica que es un starter oficial.
 ### Scopes de dependencias
 
 | Scope | ¿Cuándo se usa? | ¿Va en el JAR final? |
-|-------|----------------|---------------------|
+|---|---|---|
 | `compile` (default) | Necesaria para compilar y ejecutar | ✅ Sí |
 | `runtime` | Solo necesaria en ejecución (no para compilar) | ✅ Sí |
 | `test` | Solo para tests | ❌ No |
@@ -155,13 +157,14 @@ spring.jpa.hibernate.ddl-auto=validate
 
 Spring Boot permite tener configuraciones distintas para cada entorno mediante **perfiles**:
 
-```
+```cmd
 application.yml          ← Base común (siempre se carga)
 application-dev.yml      ← Sobreescribe/añade propiedades para dev
 application-prod.yml     ← Sobreescribe/añade propiedades para prod
 ```
 
 El perfil activo se indica con:
+
 ```bash
 # Variable de entorno
 SPRING_PROFILES_ACTIVE=dev
@@ -195,7 +198,7 @@ Esto significa: "usa el valor de la variable de entorno `SPRING_DATASOURCE_URL`,
 Hibernate puede gestionar el esquema de la BD de varias formas:
 
 | Valor | Comportamiento |
-|-------|---------------|
+|---|---|
 | `none` | No hace nada con el esquema |
 | `validate` | Comprueba que el esquema coincide con las entidades, falla si no |
 | `update` | Modifica el esquema para que coincida (peligroso en prod) |
@@ -211,6 +214,7 @@ Jackson es la librería que convierte objetos Java a JSON. Con `non_null`, los c
 ### `spring.flyway.locations`
 
 Define dónde Flyway busca los scripts de migración:
+
 - En `dev`: `classpath:db/migration` + `classpath:db/seed` (incluye datos de prueba)
 - En `prod`: solo `classpath:db/migration` (solo el esquema)
 
@@ -223,6 +227,7 @@ HikariCP es el **pool de conexiones** de Spring Boot (incluido por defecto). Un 
 ## El fichero .env.example
 
 Este fichero cumple dos propósitos:
+
 1. **Documentación**: muestra qué variables de entorno necesita la aplicación
 2. **Plantilla**: los desarrolladores hacen `cp .env.example .env` y rellenan sus valores
 
@@ -232,7 +237,7 @@ El fichero `.env` real nunca se sube al repositorio (está en `.gitignore`) porq
 
 ## Descripción del repositorio (para GitHub)
 
-```
+```cmd
 API REST para gestión de taller mecánico | Spring Boot 4 · Java 21 · JWT · PostgreSQL · Docker
 ```
 

@@ -10,33 +10,33 @@ El backend se encarga de toda la lógica de negocio, la persistencia de datos y 
 
 ## Diagrama de la arquitectura
 
-```
+```cmd
 ┌─────────────────────────────────────────────────────────────────┐
-│                         CLIENTE (Frontend)                       │
-│                    (Web App / Mobile / Postman)                  │
+│                         CLIENTE (Frontend)                      │
+│                    (Web App / Mobile / Postman)                 │
 └────────────────────────────┬────────────────────────────────────┘
                              │ HTTP/HTTPS
                              │ JSON
                              ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                    SPRING BOOT APPLICATION                       │
-│                                                                  │
+│                    SPRING BOOT APPLICATION                      │
+│                                                                 │
 │  ┌─────────────────────────────────────────────────────────┐    │
-│  │                    SECURITY LAYER                        │    │
+│  │                    SECURITY LAYER                       │    │
 │  │  JWT Filter → Autenticación → Autorización por rol      │    │
 │  └─────────────────────────────────────────────────────────┘    │
-│                            │                                     │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐           │
+│                            │                                    │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐            │
 │  │  Client  │ │ Mechanic │ │ Vehicle  │ │   Task   │  ...       │
 │  │          │ │          │ │          │ │          │            │
 │  │Controller│ │Controller│ │Controller│ │Controller│            │
 │  │ Service  │ │ Service  │ │ Service  │ │ Service  │            │
 │  │   Repo   │ │   Repo   │ │   Repo   │ │   Repo   │            │
-│  └────┬─────┘ └────┬─────┘ └────┬─────┘ └────┬─────┘           │
+│  └────┬─────┘ └────┬─────┘ └────┬─────┘ └────┬─────┘            │
 │       └────────────┴────────────┴────────────┘                  │
-│                            │                                     │
+│                            │                                    │
 │  ┌─────────────────────────────────────────────────────────┐    │
-│  │              Spring Data JPA + Hibernate                 │    │
+│  │              Spring Data JPA + Hibernate                │    │
 │  └─────────────────────────────────────────────────────────┘    │
 └────────────────────────────┬────────────────────────────────────┘
                              │ JDBC
@@ -53,7 +53,7 @@ El backend se encarga de toda la lógica de negocio, la persistencia de datos y 
 
 Cuando el frontend hace una petición a la API, pasa por estas capas en orden:
 
-```
+```cmd
 HTTP Request
     │
     ▼
@@ -102,7 +102,7 @@ HTTP Response (JSON)
 
 El código se organiza por funcionalidad de negocio, no por tipo técnico:
 
-```
+```cmd
 ✅ Por feature (elegido)         ❌ Por capa (descartado)
 ─────────────────────────        ─────────────────────────
 client/                          controller/
@@ -126,7 +126,7 @@ mechanic/                          ClientRepository.java
 
 Existe una entidad `User` que gestiona la autenticación, vinculada opcionalmente a `Client` o `Mechanic`:
 
-```
+```cmd
 User (credenciales: username, password, role)
   │
   ├─── OneToOne ──→ Client (datos de negocio del cliente)
@@ -142,7 +142,7 @@ Un `User` con rol `ADMIN` no necesita ser cliente ni mecánico, por eso la relac
 
 Las entidades JPA nunca se devuelven directamente como respuesta JSON. Siempre se convierten a DTOs (Data Transfer Objects):
 
-```
+```cmd
 Entidad JPA      →   MapStruct   →   DTO   →   JSON Response
 (Client.java)         Mapper         (ClientResponseDto)
 ```
@@ -159,7 +159,7 @@ Cuando se "borra" un cliente, mecánico o vehículo, en realidad se rellena el c
 
 Los scripts SQL que crean/modifican tablas se versionan como código en `src/main/resources/db/migration/`. Cada script tiene un número de versión:
 
-```
+```cmd
 V1__init_schema.sql
 V2__add_users_table.sql
 V3__add_soft_delete_columns.sql
@@ -172,7 +172,7 @@ Flyway registra qué scripts ya se han ejecutado en una tabla especial (`flyway_
 ## Roles y permisos
 
 | Acción | ADMIN | MECHANIC | CLIENT |
-|--------|-------|----------|--------|
+|---|---|---|---|
 | Gestionar usuarios (CRUD) | ✅ | ❌ | ❌ |
 | Ver todos los clientes | ✅ | ✅ | ❌ |
 | Ver sus propios datos | ✅ | ✅ | ✅ |
@@ -187,7 +187,7 @@ Flyway registra qué scripts ya se han ejecutado en una tabla especial (`flyway_
 
 ## Estructura de URLs de la API
 
-```
+```cmd
 /api/v1/auth/login              POST   → Obtener tokens JWT
 /api/v1/auth/refresh            POST   → Renovar access token
 /api/v1/auth/logout             POST   → Invalidar refresh token
@@ -213,10 +213,10 @@ El prefijo `/api/v1/` permite en el futuro tener una versión 2 de la API sin ro
 
 ## Entornos y cómo se activan
 
-```
+```cmd
 ┌─────────────────────────────────────────────────────────┐
-│  DESARROLLO (dev)                                        │
-│  ─────────────────────────────────────────────────────── │
+│  DESARROLLO (dev)                                       │
+│  ────────────────────────────────────────────────────── │
 │  Activación: -Dspring.profiles.active=dev (IntelliJ)    │
 │  BD: H2 en memoria (se destruye al parar)               │
 │  Datos: Scripts de seed con datos de prueba             │
@@ -225,8 +225,8 @@ El prefijo `/api/v1/` permite en el futuro tener una versión 2 de la API sin ro
 └─────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────┐
-│  PRODUCCIÓN (prod)                                       │
-│  ─────────────────────────────────────────────────────── │
+│  PRODUCCIÓN (prod)                                      │
+│  ────────────────────────────────────────────────────── │
 │  Activación: SPRING_PROFILES_ACTIVE=prod (Docker)       │
 │  BD: PostgreSQL (persistente en volumen Docker)         │
 │  Datos: Solo el esquema (sin datos de prueba)           │

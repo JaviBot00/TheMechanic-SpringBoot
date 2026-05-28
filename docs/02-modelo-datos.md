@@ -8,9 +8,9 @@ Las entidades JPA (las clases Java que se mapean a tablas de la BD), los scripts
 
 ## Ficheros entregados
 
-```
+```cmd
 fasciculo-2/
-├── src/main/java/com/workshopmanagement/
+├── src/main/java/com/hotguy/workshopmanagement/
 │   ├── common/
 │   │   ├── audit/
 │   │   │   └── AuditableEntity.java       ← Campos de auditoría compartidos
@@ -49,14 +49,15 @@ fasciculo-2/
 **Hibernate** es la implementación más popular de JPA. Spring Boot lo incluye automáticamente con `spring-boot-starter-data-jpa`. Cuando escribes una clase Java con anotaciones JPA (`@Entity`, `@Table`, `@Column`...), Hibernate traduce esas anotaciones a SQL.
 
 El flujo es:
-```
+
+```cmd
 Clase Java con @Entity → Hibernate → SQL → Base de datos
 ```
 
 ### Anotaciones JPA fundamentales
 
 | Anotación | Significado |
-|-----------|-------------|
+|---|---|
 | `@Entity` | Esta clase representa una tabla en la BD |
 | `@Table(name = "clients")` | Nombre de la tabla (por defecto usa el nombre de la clase) |
 | `@Id` | Este campo es la clave primaria |
@@ -69,7 +70,8 @@ Clase Java con @Entity → Hibernate → SQL → Base de datos
 JPA permite modelar las relaciones de la BD en Java:
 
 **@OneToMany / @ManyToOne** (uno a muchos)
-```
+
+```cmd
 Un Client tiene muchos Vehicle
 Un Vehicle tiene un solo Client (ManyToOne, lado propietario de la FK)
 ```
@@ -88,7 +90,8 @@ private Client proprietary;
 La FK (`client_id`) siempre está en la tabla del lado "muchos" (`vehicles`). El `mappedBy` en `@OneToMany` apunta al nombre del campo en la otra entidad que tiene la FK.
 
 **@OneToOne** (uno a uno)
-```
+
+```cmd
 Un User tiene un Client (opcional)
 Un Client tiene un User (opcional, mappedBy en este lado)
 ```
@@ -137,7 +140,7 @@ Sin necesitar tocar ninguna query, todas las búsquedas de clientes excluyen aut
 
 El proyecto original tenía cuatro subclases de `Vehicle` (`Car`, `Van`, `Truck`, `Motorcycle`). En la versión Spring Boot lo hemos simplificado:
 
-```
+```cmd
 Antes:                          Ahora:
 Vehicle (abstract)              Vehicle (@Entity)
   ├── Car                         └── VehicleType (enum)
@@ -156,6 +159,7 @@ Vehicle (abstract)              Vehicle (@Entity)
 ### ¿Cómo funciona?
 
 Al arrancar la aplicación, Flyway:
+
 1. Comprueba si existe la tabla `flyway_schema_history` (la crea si no existe)
 2. Lee los scripts de `db/migration/` y `db/seed/` (según el perfil)
 3. Compara la lista con los registros en `flyway_schema_history`
@@ -164,7 +168,7 @@ Al arrancar la aplicación, Flyway:
 ### Tipos de scripts
 
 | Prefijo | Tipo | Comportamiento |
-|---------|------|----------------|
+|---|---|---|
 | `V` | Versioned | Se ejecuta una sola vez. Si se modifica después, Flyway lanza error. |
 | `R` | Repeatable | Se re-ejecuta cada vez que cambia el contenido del fichero. |
 | `U` | Undo | Revierte una migración V (requiere Flyway Teams). |
@@ -173,7 +177,7 @@ Usamos `V` para el esquema (nunca cambia) y `R` para los datos de prueba (podemo
 
 ### Convención de nombres
 
-```
+```cmd
 V1__init_schema.sql
 │ │  └── Descripción (palabras con guión bajo)
 │ └──── Doble guión bajo (obligatorio)

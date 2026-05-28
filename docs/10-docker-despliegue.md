@@ -11,13 +11,16 @@ Sin Docker, desplegar una aplicación Java implica instalar Java en el servidor,
 ## Conceptos clave
 
 ### Imagen vs Contenedor
+
 - **Imagen**: plantilla inmutable (como una clase Java)
 - **Contenedor**: instancia en ejecución de una imagen (como un objeto Java)
 
 ### Volumen
+
 Almacenamiento persistente fuera del contenedor. Sin volumen, los datos se pierden al reiniciar el contenedor.
 
 ### Red (network)
+
 Permite que los contenedores se comuniquen entre sí por nombre. `workshop-api` puede conectarse a `workshop-db` usando `db` como hostname.
 
 ---
@@ -112,20 +115,20 @@ docker-compose up -d --build api
 
 ## Estructura de la red Docker
 
-```
+```cmd
 Internet
     │
     ▼
 :8080 (expuesto)
     │
     ▼
-┌─────────────────────────────────┐
-│       workshop-network          │
-│                                 │
+┌────────────────────────────────────┐
+│       workshop-network             │
+│                                    │
 │  workshop-api ──────► workshop-db  │
-│  Spring Boot        PostgreSQL  │
-│     :8080               :5432   │
-└─────────────────────────────────┘
+│  Spring Boot        PostgreSQL     │
+│     :8080               :5432      │
+└────────────────────────────────────┘
                               ↑
                     :5432 expuesto SOLO en localhost
                     (para DBeaver/pgAdmin en desarrollo)

@@ -8,12 +8,12 @@ La implementación completa de todas las features de negocio, los tests (unitari
 
 ## Ficheros entregados
 
-```
+```cmd
 fasciculo-4/
 ├── Dockerfile
 ├── docker-compose.yml
 └── src/
-    ├── main/java/com/workshopmanagement/
+    ├── main/java/com/hotguy/workshopmanagement/
     │   ├── client/
     │   │   ├── controller/ClientController.java
     │   │   ├── service/ClientService.java
@@ -29,7 +29,7 @@ fasciculo-4/
     │   │   ├── service/ReportService.java
     │   │   └── dto/SummaryReportResponse.java
     │   └── config/OpenApiConfig.java
-    └── test/java/com/workshopmanagement/
+    └── test/java/com/hotguy/workshopmanagement/
         ├── auth/JwtServiceTest.java
         ├── auth/AuthControllerIntegrationTest.java
         ├── client/ClientServiceTest.java
@@ -44,7 +44,7 @@ fasciculo-4/
 
 Cada feature sigue exactamente la misma estructura de cuatro capas:
 
-```
+```cmd
 HTTP Request
      │
      ▼
@@ -61,7 +61,8 @@ Repository          ← Acceso a BD, Spring Data genera el SQL
 ```
 
 El **Mapper** (MapStruct) traduce entre las capas:
-```
+
+```cmd
 Request DTO ──MapStruct──→ Entity ──→ BD
 BD ──→ Entity ──MapStruct──→ Response DTO ──→ JSON
 ```
@@ -113,12 +114,14 @@ public ResponseEntity<Page<ClientResponse>> listClients(
 ```
 
 El cliente controla la paginación con query params:
-```
+
+```cmd
 GET /api/v1/clients?page=0&size=10&sort=surname1,asc
 GET /api/v1/clients?page=1&size=5&sort=name,desc
 ```
 
 La respuesta incluye metadatos de paginación:
+
 ```json
 {
   "content": [...],
@@ -138,12 +141,14 @@ La respuesta incluye metadatos de paginación:
 Combinamos dos niveles de seguridad:
 
 **Nivel 1 - URL** (en `SecurityConfig`): reglas globales por ruta.
+
 ```java
 .requestMatchers("/api/v1/auth/register").hasRole("ADMIN")
 .requestMatchers(HttpMethod.PATCH, "/api/v1/tasks/*/pay").hasRole("ADMIN")
 ```
 
 **Nivel 2 - Método** (con `@PreAuthorize` en Services): reglas específicas por operación.
+
 ```java
 // Un CLIENT solo puede ver sus propios datos
 @PreAuthorize("hasAnyRole('ADMIN','MECHANIC') or " +
@@ -266,7 +271,7 @@ La combinación de ambos tipos da la máxima confianza: los unitarios son rápid
 
 ## Docker: por qué multi-stage
 
-```
+```cmd
 Stage 1 (builder):           Stage 2 (runtime):
 ────────────────────         ──────────────────────
 eclipse-temurin:21-jdk       eclipse-temurin:21-jre
@@ -292,7 +297,7 @@ Si solo cambia el código fuente (la mayoría de los cambios), Docker reutiliza 
 
 ## docker-compose: servicios y redes
 
-```
+```cmd
 ┌─────────────────────────────────────────┐
 │          workshop-network               │
 │  ┌──────────────┐   ┌────────────────┐  │
@@ -315,7 +320,8 @@ Los servicios se comunican por nombre (`db`, `api`) dentro de la red interna Doc
 ## Referencia rápida de endpoints
 
 ### Autenticación
-```
+
+```cmd
 POST /api/v1/auth/login      → {accessToken, refreshToken, role}
 POST /api/v1/auth/refresh    → {accessToken, refreshToken, role}
 POST /api/v1/auth/logout     → 204
@@ -323,7 +329,8 @@ POST /api/v1/auth/register   → {accessToken, refreshToken, role} [ADMIN]
 ```
 
 ### Clientes
-```
+
+```cmd
 POST   /api/v1/clients           [ADMIN, MECHANIC]
 GET    /api/v1/clients           [ADMIN, MECHANIC]
 GET    /api/v1/clients/{id}      [ADMIN, MECHANIC, CLIENT*]
@@ -334,7 +341,8 @@ DELETE /api/v1/clients/{id}      [ADMIN]
 ```
 
 ### Mecánicos
-```
+
+```cmd
 POST   /api/v1/mechanics         [ADMIN]
 GET    /api/v1/mechanics         [ADMIN, MECHANIC]
 GET    /api/v1/mechanics/{id}    [ADMIN, MECHANIC]
@@ -344,7 +352,8 @@ DELETE /api/v1/mechanics/{id}    [ADMIN]
 ```
 
 ### Vehículos
-```
+
+```cmd
 POST   /api/v1/vehicles                    [ADMIN, MECHANIC]
 GET    /api/v1/vehicles                    [ADMIN, MECHANIC]
 GET    /api/v1/vehicles/{id}               [ADMIN, MECHANIC, CLIENT*]
@@ -355,7 +364,8 @@ DELETE /api/v1/vehicles/{id}               [ADMIN]
 ```
 
 ### Tareas de taller
-```
+
+```cmd
 POST   /api/v1/tasks                       [ADMIN, MECHANIC]
 GET    /api/v1/tasks                       [ADMIN, MECHANIC]
 GET    /api/v1/tasks/{id}                  [ADMIN, MECHANIC, CLIENT]
@@ -372,7 +382,8 @@ DELETE /api/v1/tasks/{id}                  [ADMIN]
 ```
 
 ### Reportes
-```
+
+```cmd
 GET    /api/v1/reports/summary             [ADMIN, MECHANIC]
 ```
 

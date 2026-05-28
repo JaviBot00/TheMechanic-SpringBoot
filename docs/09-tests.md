@@ -2,8 +2,8 @@
 
 ## Estructura de los tests
 
-```
-src/test/java/com/workshopmanagement/
+```cmd
+src/test/java/com/hotguy/workshopmanagement/
 ├── auth/
 │   ├── JwtServiceTest.java                  ← Unitario: generación/validación JWT
 │   └── AuthControllerIntegrationTest.java   ← Integración: flujo login completo
@@ -21,18 +21,21 @@ src/test/java/com/workshopmanagement/
 ## Tipos de tests y cuándo usar cada uno
 
 ### Tests unitarios
+
 - **Velocidad**: milisegundos
 - **Aislamiento**: completo (no Spring, no BD)
 - **Uso**: lógica de negocio, cálculos, reglas de dominio
 - **Anotación clave**: `@ExtendWith(MockitoExtension.class)`
 
 ### Tests de integración
+
 - **Velocidad**: segundos (levanta Spring + H2)
 - **Aislamiento**: ninguno (prueba el sistema completo)
 - **Uso**: endpoints HTTP, seguridad JWT, flujos completos
 - **Anotación clave**: `@SpringBootTest` + `@AutoConfigureMockMvc`
 
 ### Regla general
+
 Escribe más tests unitarios que de integración (pirámide de tests).
 Los unitarios son baratos; los de integración son caros pero necesarios.
 
