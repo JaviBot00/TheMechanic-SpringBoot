@@ -28,7 +28,31 @@ public interface WorkshopTaskRepository extends JpaRepository<WorkshopTask, Long
     @Query("SELECT COUNT(t) FROM WorkshopTask t WHERE t.finished = false")
     long countPendingTasks();
 
-    List<WorkshopTask> findByPaidTrue();
+//    @Query("""
+//    SELECT COALESCE(SUM(t.realHours * v.type.hourlyRate + v.type.fixedFee), 0.0)
+//    FROM WorkshopTask t
+//    JOIN t.vehicle v
+//    WHERE t.paid = true
+//    """)
+    @Query(value = """
+    SELECT COALESCE(SUM(
+        t.real_hours * CASE v.type
+            WHEN 'MOTORCYCLE' THEN 20
+            WHEN 'CAR'        THEN 25
+            WHEN 'VAN'        THEN 30
+            WHEN 'TRUCK'      THEN 40
+            ELSE 0 END
+        +
+        CASE v.type
+            WHEN 'VAN'   THEN 30
+            WHEN 'TRUCK' THEN 50
+            ELSE 0 END
+    ), 0.0)
+    FROM workshop_tasks t
+    JOIN vehicles v ON t.vehicle_id = v.id
+    WHERE t.is_paid = true
+    """, nativeQuery = true)
+    double sumTotalRevenue();
 
     @Query("SELECT t FROM WorkshopTask t WHERE t.mechanic.id = :mechanicId AND t.finished = false")
     List<WorkshopTask> findActiveTasksByMechanic(Long mechanicId);

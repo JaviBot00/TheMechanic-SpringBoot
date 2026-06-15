@@ -1,9 +1,10 @@
 package com.hotguy.workshopmanagement.client.service;
 
-import com.hotguy.workshopmanagement.auth.model.User;
+import com.hotguy.workshopmanagement.client.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Servicio auxiliar para evaluar permisos de acceso específicos del dominio
@@ -27,6 +28,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ClientSecurityService {
 
+    private final ClientRepository clientRepository;
+
     /**
      * Comprueba si el usuario autenticado es el cliente con el ID dado.
      *
@@ -37,15 +40,10 @@ public class ClientSecurityService {
      * @param clientId       el ID del cliente al que se intenta acceder
      * @return {@code true} si el usuario autenticado es ese cliente
      */
+    @Transactional(readOnly = true)
     public boolean isOwner(Authentication authentication, Long clientId) {
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return false;
-        }
-        Object principal = authentication.getPrincipal();
-        if (principal instanceof User user) {
-            // El usuario tiene un cliente vinculado y su ID coincide con el solicitado
-            return user.getClient() != null && user.getClient().getId().equals(clientId);
-        }
-        return false;
+        if (authentication == null || !authentication.isAuthenticated()) return false;
+        String username = authentication.getName();
+        return clientRepository.existsByIdAndUserUsername(clientId, username);
     }
 }

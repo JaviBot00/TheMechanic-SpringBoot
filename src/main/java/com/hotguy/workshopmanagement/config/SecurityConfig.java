@@ -19,6 +19,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Configuración central de Spring Security.
@@ -88,6 +90,12 @@ public class SecurityConfig {
                 // Gestión de usuarios: solo ADMIN
                 .requestMatchers("/api/v1/auth/register").hasRole("ADMIN")
 
+                //
+                .requestMatchers("/api/v1/auth/logout").authenticated()
+
+                //
+                .requestMatchers("/api/v1/vehicles/**").hasAnyRole("ADMIN", "MECHANIC", "CLIENT")
+
                 // Reportes: ADMIN y MECHANIC
                 .requestMatchers("/api/v1/reports/**").hasAnyRole("ADMIN", "MECHANIC")
 
@@ -117,7 +125,20 @@ public class SecurityConfig {
 
             // Configurar las cabeceras HTTP para permitir la consola H2 en un iframe (solo
             // dev)
-            .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
+            .headers(headers -> headers
+                .frameOptions(frame -> {
+                    String profile = System.getProperty("spring.profiles.active", "");
+                    if (profile.contains("dev")) {
+                        frame.sameOrigin();
+                    } else {
+                        frame.deny();
+                    }
+                }))
+
+            .exceptionHandling(ex -> ex
+                .authenticationEntryPoint((request, response, authException) ->
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"))
+            )
 
             .build();
     }
@@ -179,6 +200,7 @@ public class SecurityConfig {
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
+        System.out.println("Password encriptada: " + new BCryptPasswordEncoder().encode("password123"));
         return new BCryptPasswordEncoder();
     }
 }

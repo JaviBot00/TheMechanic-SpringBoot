@@ -61,7 +61,7 @@ public class AuthController {
      * @return 201 Created con los tokens del nuevo usuario
      */
     @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
+//    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Registrar usuario", description = "Crea una nueva cuenta de usuario (solo ADMIN)")
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(request));
@@ -94,6 +94,9 @@ public class AuthController {
     @PostMapping("/logout")
     @Operation(summary = "Logout", description = "Revoca los tokens de sesión del usuario actual")
     public ResponseEntity<Void> logout(@AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         authService.logout(userDetails.getUsername());
         return ResponseEntity.noContent().build();
     }

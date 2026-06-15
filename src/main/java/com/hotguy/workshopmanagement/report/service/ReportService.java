@@ -32,24 +32,15 @@ public class ReportService {
      */
     @PreAuthorize("hasAnyRole('ADMIN','MECHANIC')")
     public SummaryReportResponse getSummary() {
-        long totalClients = clientRepository.countActiveClients();
+        long totalClients   = clientRepository.countActiveClients();
         long totalMechanics = mechanicRepository.countActiveMechanics();
-        long totalVehicles = vehicleRepository.countActiveVehicles();
-        long totalTasks = taskRepository.count();
-        long pendingTasks = taskRepository.countPendingTasks();
-        Double revenue = taskRepository.findByPaidTrue()
-            .stream()
-            .mapToDouble(t -> t.getRealHours()
-                * t.getVehicle().getType().getHourlyRate()
-                + t.getVehicle().getType().getFixedFee())
-            .sum();
+        long totalVehicles  = vehicleRepository.countActiveVehicles();
+        long totalTasks     = taskRepository.count();
+        long pendingTasks   = taskRepository.countPendingTasks();
+        double revenue      = taskRepository.sumTotalRevenue();
 
         return new SummaryReportResponse(
-            totalClients,
-            totalMechanics,
-            totalVehicles,
-            totalTasks,
-            pendingTasks,
-            revenue != null ? revenue : 0.0);
+            totalClients, totalMechanics, totalVehicles,
+            totalTasks, pendingTasks, revenue);
     }
 }

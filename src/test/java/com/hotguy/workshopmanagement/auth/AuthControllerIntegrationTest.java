@@ -1,6 +1,6 @@
 package com.hotguy.workshopmanagement.auth;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.hotguy.workshopmanagement.auth.dto.LoginRequest;
 import com.hotguy.workshopmanagement.auth.model.Role;
 import com.hotguy.workshopmanagement.auth.model.User;

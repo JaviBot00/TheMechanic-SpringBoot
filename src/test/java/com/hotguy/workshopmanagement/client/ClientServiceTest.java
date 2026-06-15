@@ -189,7 +189,7 @@ class ClientServiceTest {
     void shouldUpdateClientData() {
         // Given
         given(clientRepository.findById(1L)).willReturn(Optional.of(testClient));
-        given(clientRepository.existsByNif("12345678A")).willReturn(false);
+//        given(clientRepository.existsByNif("12345678A")).willReturn(false);
         given(clientRepository.save(testClient)).willReturn(testClient);
         given(clientMapper.toResponse(testClient)).willReturn(testResponse);
         willDoNothing().given(clientMapper).updateEntityFromRequest(testRequest, testClient);

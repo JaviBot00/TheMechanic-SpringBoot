@@ -77,6 +77,8 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
      */
     boolean existsByClientCode(Integer clientCode);
 
+    boolean existsByIdAndUserUsername(Long id, String username);
+
     /**
      * Cuenta los clientes activos. Útil para estadísticas y reportes.
      * Hibernate aplica el filtro de soft delete automáticamente.

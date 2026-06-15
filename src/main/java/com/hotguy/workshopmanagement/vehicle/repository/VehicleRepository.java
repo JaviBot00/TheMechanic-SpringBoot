@@ -26,4 +26,8 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
     @Query("SELECT COUNT(v) FROM Vehicle v")
     long countActiveVehicles();
+
+    boolean existsByIdAndProprietaryId(Long id, Long proprietaryId);
+
+    boolean existsByIdAndProprietaryUserUsername(Long id, String username);
 }

@@ -49,7 +49,7 @@ public class ClientController {
      * @return 201 Created con el cliente creado
      */
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
+//    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Crear cliente")
     public ResponseEntity<ClientResponse> createClient(@Valid @RequestBody ClientRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(clientService.createClient(request));

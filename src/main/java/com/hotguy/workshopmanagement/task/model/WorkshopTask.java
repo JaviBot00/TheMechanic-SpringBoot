@@ -4,6 +4,7 @@ import com.hotguy.workshopmanagement.client.model.Client;
 import com.hotguy.workshopmanagement.common.audit.AuditableEntity;
 import com.hotguy.workshopmanagement.mechanic.model.Mechanic;
 import com.hotguy.workshopmanagement.vehicle.model.Vehicle;
+import org.hibernate.annotations.SQLRestriction;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,7 @@ import java.time.LocalDate;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
+@SQLRestriction("deleted_at IS NULL")
 @Entity
 @Table(name = "workshop_tasks")
 public class WorkshopTask extends AuditableEntity {
@@ -135,9 +137,11 @@ public class WorkshopTask extends AuditableEntity {
      * Marca la tarea como finalizada. Operación idempotente.
      */
     public void finish() {
+        if (this.paid) {
+            throw new IllegalStateException("No se puede modificar una tarea ya pagada");
+        }
         this.finished = true;
     }
-
     /**
      * Marca la tarea como pagada.
      *

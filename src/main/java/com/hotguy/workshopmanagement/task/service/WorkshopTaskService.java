@@ -36,6 +36,18 @@ public class WorkshopTaskService {
      */
     @PreAuthorize("hasAnyRole('ADMIN','MECHANIC')")
     public WorkshopTaskResponse createTask(WorkshopTaskRequest request) {
+        if (request.vehicleId() == null) {
+            throw new IllegalArgumentException("El ID del vehículo es obligatorio para crear una tarea");
+        }
+        if (request.mechanicId() == null) {
+            throw new IllegalArgumentException("El ID del mecánico es obligatorio para crear una tarea");
+        }
+        if (request.previewHours() == null) {
+            throw new IllegalArgumentException("Las horas estimadas son obligatorias para crear una tarea");
+        }
+        if (request.initDate() == null) {
+            throw new IllegalArgumentException("La fecha de inicio es obligatoria para crear una tarea");
+        }
         Vehicle vehicle = vehicleRepository.findById(request.vehicleId())
             .orElseThrow(() -> new ResourceNotFoundException("Vehículo no encontrado: " + request.vehicleId()));
         Mechanic mechanic = mechanicRepository.findById(request.mechanicId())
@@ -111,6 +123,9 @@ public class WorkshopTaskService {
     @PreAuthorize("hasAnyRole('ADMIN','MECHANIC')")
     public WorkshopTaskResponse updateTask(Long id, WorkshopTaskRequest request) {
         WorkshopTask task = findTaskOrThrow(id);
+        if (task.isPaid()) {
+            throw new IllegalStateException("No se puede modificar una tarea ya pagada");
+        }
         if (request.diagnostic() != null && !request.diagnostic().isBlank()) {
             task.setDiagnostic(request.diagnostic());
         }
