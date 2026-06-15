@@ -64,6 +64,8 @@ spring:
     jpa:
         # Muestra las queries SQL generadas por Hibernate en la consola.
         # Muy útil para depurar, pero genera mucho ruido en producción.
+        hibernate:
+            ddl-auto: none      # ← cambiar de validate a none en dev; Flyway gestiona el esquema
         show-sql: true
         properties:
             hibernate:
@@ -86,6 +88,8 @@ logging:
         # Muestra los parámetros de las queries SQL (valores reales, no '?')
         org.hibernate.orm.jdbc.bind: TRACE
         org.hibernate.SQL: DEBUG
+        org.springframework.security: TRACE
+        org.springframework.security.authentication: DEBUG
 
 # =============================================================================
 # ACTUATOR EN DESARROLLO

@@ -74,9 +74,9 @@ INSERT INTO vehicles (id, registration_code, model, type, client_id, created_at,
 VALUES (1, 'TOYOTA-001', 'Toyota Corolla', 'CAR', 1, NOW(), NOW()),
        (2, 'FORD-001', 'Ford Focus', 'CAR', 2, NOW(), NOW()),
        (3, 'BMW-MOTO-001', 'BMW R1250GS', 'MOTORCYCLE', 1, NOW(), NOW()),
-       (4, 'VW-GOLF-001', 'Volkswagen Golf', 'MOTORCYCLE', 3, NOW(), NOW()),
-       (5, 'HONDA-001', 'Honda Civic', 'TRUCK', 5, NOW(), NOW()),
-       (6, 'RENAULT-001', 'Renault Megane', 'TRUCK', 8, NOW(), NOW()),
+       (4, 'VW-GOLF-001', 'Volkswagen Golf', 'CAR', 3, NOW(), NOW()),
+       (5, 'HONDA-001', 'Honda Civic', 'CAR', 5, NOW(), NOW()),
+       (6, 'RENAULT-001', 'Renault Megane', 'CAR', 8, NOW(), NOW()),
        (7, 'VW-PASSAT-001', 'Volkswagen Passat', 'VAN', 10, NOW(), NOW()),
        (8, 'SEAT-IBIZA-001', 'Seat Ibiza', 'VAN', 6, NOW(), NOW());
 
@@ -87,21 +87,21 @@ VALUES (1, 'TOYOTA-001', 'Toyota Corolla', 'CAR', 1, NOW(), NOW()),
 INSERT INTO users (id, username, password, role, enabled, client_id, mechanic_id, created_at, updated_at)
 VALUES
     -- Admin puro (sin client ni mechanic vinculado)
-    (1, 'admin', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'ADMIN', TRUE, NULL, NULL, NOW(),
+    (1, 'admin', '$2a$10$12Ak1Nhxvx4Qnqq/wUp5xOPcg8dTLss1Mg7LpSlNhS4fKHRsOsKBO', 'ADMIN', TRUE, NULL, NULL, NOW(),
      NOW()),
     -- Clientes
-    (2, 'luismartinez', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'CLIENT', TRUE, 1, NULL, NOW(),
+    (2, 'luismartinez', '$2a$10$12Ak1Nhxvx4Qnqq/wUp5xOPcg8dTLss1Mg7LpSlNhS4fKHRsOsKBO', 'CLIENT', TRUE, 1, NULL, NOW(),
      NOW()),
-    (3, 'anagomez', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'CLIENT', TRUE, 2, NULL, NOW(),
+    (3, 'anagomez', '$2a$10$12Ak1Nhxvx4Qnqq/wUp5xOPcg8dTLss1Mg7LpSlNhS4fKHRsOsKBO', 'CLIENT', TRUE, 2, NULL, NOW(),
      NOW()),
-    (4, 'carlosperez', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'CLIENT', TRUE, 3, NULL, NOW(),
+    (4, 'carlosperez', '$2a$10$12Ak1Nhxvx4Qnqq/wUp5xOPcg8dTLss1Mg7LpSlNhS4fKHRsOsKBO', 'CLIENT', TRUE, 3, NULL, NOW(),
      NOW()),
     -- Mecánicos
-    (5, 'paco.omero', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'MECHANIC', TRUE, NULL, 1, NOW(),
+    (5, 'paco.omero', '$2a$10$12Ak1Nhxvx4Qnqq/wUp5xOPcg8dTLss1Mg7LpSlNhS4fKHRsOsKBO', 'MECHANIC', TRUE, NULL, 1, NOW(),
      NOW()),
-    (6, 'ana.lopez', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'MECHANIC', TRUE, NULL, 2, NOW(),
+    (6, 'ana.lopez', '$2a$10$12Ak1Nhxvx4Qnqq/wUp5xOPcg8dTLss1Mg7LpSlNhS4fKHRsOsKBO', 'MECHANIC', TRUE, NULL, 2, NOW(),
      NOW()),
-    (7, 'carlos.sanchez', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'MECHANIC', TRUE, NULL, 3,
+    (7, 'carlos.sanchez', '$2a$10$12Ak1Nhxvx4Qnqq/wUp5xOPcg8dTLss1Mg7LpSlNhS4fKHRsOsKBO', 'MECHANIC', TRUE, NULL, 3,
      NOW(), NOW());
 
 -- -----------------------------------------------------------------------------
@@ -113,7 +113,7 @@ VALUES (1, 'Cambio de aceite y filtro', 'Aceite 5W30 sintético + filtro Mann', 
         1, 1, NOW(), NOW()),
        (2, 'Revisión de frenos', 'Pastillas delanteras sustituidas', 4, 3, TRUE, TRUE, '2026-03-15',
         'Discos en buen estado', 2, 2, 2, NOW(), NOW()),
-       (3, 'Rotación de neumáticos', NULL, 1, 1.5, FALSE, FALSE, '2026-04-10', NULL, 3, 3, 3, NOW(), NOW()),
+       (3, 'Rotación de neumáticos', NULL, 1, 1.5, FALSE, FALSE, '2026-04-10', NULL, 1, 3, 3, NOW(), NOW()),
        (4, 'Diagnóstico motor', NULL, 8, 4, FALSE, FALSE, '2026-05-15', 'Pendiente de pieza de recambio', 3, 4, 4,
         NOW(), NOW()),
        (5, 'Sustitución batería', 'Batería Varta 72Ah instalada', 1, 1, TRUE, FALSE, '2026-06-10', NULL, 5, 5, 5, NOW(),
@@ -123,3 +123,11 @@ VALUES (1, 'Cambio de aceite y filtro', 'Aceite 5W30 sintético + filtro Mann', 
         NOW(), NOW()),
        (8, 'Vaciado y llenado líquido refrigerante', NULL, 2, 1, FALSE, FALSE, '2026-09-15', NULL, 8, 8, 8, NOW(),
         NOW());
+
+-- Reset sequences after manual ID inserts
+ALTER TABLE clients ALTER COLUMN id RESTART WITH 11;
+ALTER TABLE mechanics ALTER COLUMN id RESTART WITH 10;
+ALTER TABLE vehicles ALTER COLUMN id RESTART WITH 9;
+ALTER TABLE users ALTER COLUMN id RESTART WITH 8;
+ALTER TABLE workshop_tasks ALTER COLUMN id RESTART WITH 9;
+ALTER TABLE refresh_tokens ALTER COLUMN id RESTART WITH 1;

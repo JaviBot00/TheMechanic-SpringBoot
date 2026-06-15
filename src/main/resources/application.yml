@@ -62,7 +62,7 @@ spring:
 # =============================================================================
 security:
     jwt:
-        secret-key: "dev-secret-key-that-must-be-changed-in-production-min-256-bits"
+        secret-key: ${SECURITY_JWT_SECRET_KEY:dev-secret-key-change-in-production-must-be-at-least-32-chars}
         access-token-expiration: 3600000
         refresh-token-expiration: 604800000
 

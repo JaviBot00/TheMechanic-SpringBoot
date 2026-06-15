@@ -26,9 +26,9 @@ services:
 
     environment:
       # Credenciales de la BD. Vienen del fichero .env (nunca hardcodeadas aquí).
-      POSTGRES_DB: ${POSTGRES_DB:-workshopdb}
-      POSTGRES_USER: ${POSTGRES_USER:-workshop_user}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?La variable POSTGRES_PASSWORD es obligatoria}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       # Zona horaria del servidor PostgreSQL
       PGTZ: UTC
 
@@ -46,10 +46,10 @@ services:
       # Docker espera a que PostgreSQL esté listo antes de arrancar la API.
       # pg_isready comprueba que el servidor acepta conexiones.
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-workshop_user} -d ${POSTGRES_DB:-workshopdb}"]
-      interval: 10s
+      interval: 5s
       timeout: 5s
-      retries: 5
-      start_period: 30s
+      retries: 10
+      start_period: 60s
 
     networks:
       - workshop-network
@@ -75,15 +75,15 @@ services:
 
       # Conexión a la BD. Referencia al servicio "db" por nombre de servicio Docker.
       # Docker Compose crea una red interna donde los servicios se resuelven por nombre.
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-workshopdb}
-      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-workshop_user}
-      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?La variable POSTGRES_PASSWORD es obligatoria}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
 
       # JWT: la clave secreta DEBE ser una cadena larga y aleatoria en producción.
       # Generar con: openssl rand -base64 64
-      SECURITY_JWT_SECRET_KEY: ${SECURITY_JWT_SECRET_KEY:?La variable SECURITY_JWT_SECRET_KEY es obligatoria}
-      SECURITY_JWT_ACCESS_TOKEN_EXPIRATION: ${SECURITY_JWT_ACCESS_TOKEN_EXPIRATION:-3600000}
-      SECURITY_JWT_REFRESH_TOKEN_EXPIRATION: ${SECURITY_JWT_REFRESH_TOKEN_EXPIRATION:-604800000}
+      SECURITY_JWT_SECRET_KEY: ${SECURITY_JWT_SECRET_KEY}
+      SECURITY_JWT_ACCESS_TOKEN_EXPIRATION: ${SECURITY_JWT_ACCESS_TOKEN_EXPIRATION}
+      SECURITY_JWT_REFRESH_TOKEN_EXPIRATION: ${SECURITY_JWT_REFRESH_TOKEN_EXPIRATION}
 
       SERVER_PORT: 8080
 
@@ -102,8 +102,8 @@ services:
       test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health || exit 1"]
       interval: 30s
       timeout: 10s
-      retries: 3
-      start_period: 60s
+      retries: 5
+      start_period: 90s
 
 # =============================================================================
 # VOLÚMENES NOMBRADOS
